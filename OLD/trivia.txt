@@ -1,0 +1,74 @@
+const { EmbedBuilder } = require('discord.js');
+
+async function generateTriviaQuestion(openai, genre) {
+  const result = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [
+      {
+        role: 'system',
+        content: `Generate a trivia question with 4 multiple-choice answers in the genre "${genre}".`,
+      },
+    ],
+    temperature: 0.5,
+    max_tokens: 100,
+  });
+
+  const questionData = result.data.choices[0].message.content;
+  return questionData;
+}
+
+async function startTriviaGame(openai, message, genre, numberOfQuestions) {
+  const scoreboard = new Map();
+  const emojis = ['🇦', '🇧', '🇨', '🇩'];
+
+  for (let i = 0; i < numberOfQuestions; i++) {
+    const questionData = await generateTriviaQuestion(openai, genre);
+    const lines = questionData.split('\n').filter(line => line.trim());
+    const question = lines.shift();
+    const answers = lines.map((line) => line.replace(/^[A-D]\)/, ''));
+    const correctIndex = answers.findIndex(answer => answer.startsWith('🎯'));
+
+    const questionEmbed = new EmbedBuilder()
+      .setDescription(question + '\n\n' + answers.map((answer, index) => `${emojis[index]} ${answer}`).join('\n'))
+      .setColor('#0099ff');
+
+    const questionMessage = await message.channel.send({ embeds: [questionEmbed] });
+
+    for (const emoji of emojis) {
+      await questionMessage.react(emoji);
+    }
+
+    const filter = (reaction, user) => emojis.includes(reaction.emoji.name) && user.id === message.author.id;
+    const collector = questionMessage.createReactionCollector({ filter, time: 30000 });
+
+    collector.on('collect', async (reaction, user) => {
+      const selectedIndex = emojis.indexOf(reaction.emoji.name);
+
+      if (selectedIndex === correctIndex) {
+        const currentScore = scoreboard.get(user.id) || 0;
+        scoreboard.set(user.id, currentScore + 1);
+        await message.channel.send({ content: 'Correct! 🎉' });
+        collector.stop();
+      } else {
+        await message.channel.send({ content: 'Incorrect! 😞' });
+      }
+    });
+
+    collector.on('end', () => {
+      questionMessage.reactions.removeAll().catch(() => {});
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 30000));
+  }
+
+  const sortedScores = Array.from(scoreboard.entries()).sort((a, b) => b[1] - a[1]);
+  const scoreEmbed = new EmbedBuilder().setTitle('Trivia Scoreboard').setColor('#0099ff');
+
+  sortedScores.forEach(([userId, score]) => {
+    scoreEmbed.addField(`<@${userId}>`, `${score} correct`, true);
+  });
+
+  message.channel.send({ embeds: [scoreEmbed] });
+}
+
+module.exports = { startTriviaGame };

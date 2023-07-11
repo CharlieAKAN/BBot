@@ -1,0 +1,561 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@9.5.0
+2 info using node@v18.15.0
+3 timing npm:load:whichnode Completed in 2ms
+4 timing config:load:defaults Completed in 4ms
+5 timing config:load:file:/usr/local/lib/node_modules/npm/npmrc Completed in 2ms
+6 timing config:load:builtin Completed in 2ms
+7 timing config:load:cli Completed in 3ms
+8 timing config:load:env Completed in 0ms
+9 timing config:load:project Completed in 1ms
+10 timing config:load:file:/home/container/.npmrc Completed in 1ms
+11 timing config:load:user Completed in 1ms
+12 timing config:load:file:/usr/local/etc/npmrc Completed in 0ms
+13 timing config:load:global Completed in 1ms
+14 timing config:load:setEnvs Completed in 1ms
+15 timing config:load Completed in 15ms
+16 timing npm:load:configload Completed in 15ms
+17 timing npm:load:mkdirpcache Completed in 1ms
+18 timing npm:load:mkdirplogs Completed in 0ms
+19 verbose title npm install discord.js openai cheerio-httpcli json-stringify-safe fs googleapis luxon @google-cloud/video-intelligence @google-cloud/storage axios @google-cloud/vision
+20 verbose argv "install" "discord.js" "openai" "cheerio-httpcli" "json-stringify-safe" "fs" "googleapis" "luxon" "@google-cloud/video-intelligence" "@google-cloud/storage" "axios" "@google-cloud/vision"
+21 timing npm:load:setTitle Completed in 5ms
+22 timing config:load:flatten Completed in 54ms
+23 timing npm:load:display Completed in 56ms
+24 verbose logfile logs-max:10 dir:/home/container/.npm/_logs/2023-06-26T21_12_23_933Z-
+25 verbose logfile /home/container/.npm/_logs/2023-06-26T21_12_23_933Z-debug-0.log
+26 timing npm:load:logFile Completed in 13ms
+27 timing npm:load:timers Completed in 0ms
+28 timing npm:load:configScope Completed in 0ms
+29 timing npm:load Completed in 92ms
+30 timing arborist:ctor Completed in 2ms
+31 silly logfile start cleaning logs, removing 1 files
+32 silly logfile done cleaning log files
+33 timing idealTree:init Completed in 1511ms
+34 timing idealTree:userRequests Completed in 61ms
+35 silly idealTree buildDeps
+36 silly fetch manifest @google-cloud/storage@^6.11.0
+37 timing arborist:ctor Completed in 1ms
+38 http fetch GET 200 https://registry.npmjs.org/@google-cloud%2fstorage 1819ms (cache revalidated)
+39 silly fetch manifest @google-cloud/video-intelligence@^4.2.2
+40 http fetch GET 200 https://registry.npmjs.org/npm 3612ms (cache updated)
+41 http fetch GET 200 https://registry.npmjs.org/@google-cloud%2fvideo-intelligence 941ms (cache revalidated)
+42 silly fetch manifest @google-cloud/vision@^3.1.3
+43 http fetch GET 200 https://registry.npmjs.org/@google-cloud%2fvision 715ms (cache revalidated)
+44 silly fetch manifest axios@^1.4.0
+45 http fetch GET 200 https://registry.npmjs.org/axios 57ms (cache revalidated)
+46 silly fetch manifest cheerio-httpcli@^0.8.3
+47 http fetch GET 200 https://registry.npmjs.org/cheerio-httpcli 366ms (cache revalidated)
+48 silly fetch manifest @types/node@^14.17.5
+49 http fetch GET 200 https://registry.npmjs.org/@types%2fnode 171ms (cache updated)
+50 silly fetch manifest discord.js@^14.11.0
+51 http fetch GET 200 https://registry.npmjs.org/discord.js 428ms (cache updated)
+52 silly fetch manifest fs@^0.0.1-security
+53 http fetch GET 200 https://registry.npmjs.org/fs 500ms (cache revalidated)
+54 silly fetch manifest googleapis@^116.0.0
+55 http fetch GET 200 https://registry.npmjs.org/googleapis 323ms (cache revalidated)
+56 silly fetch manifest json-stringify-safe@^5.0.1
+57 http fetch GET 200 https://registry.npmjs.org/json-stringify-safe 62ms (cache revalidated)
+58 silly fetch manifest luxon@^3.3.0
+59 http fetch GET 200 https://registry.npmjs.org/luxon 143ms (cache revalidated)
+60 silly fetch manifest openai@^3.2.1
+61 http fetch GET 200 https://registry.npmjs.org/openai 48ms (cache updated)
+62 silly placeDep ROOT @google-cloud/storage@6.11.0 REPLACE for: bot@1.0.0 want: ^6.11.0
+63 silly placeDep ROOT @google-cloud/video-intelligence@4.2.2 REPLACE for: bot@1.0.0 want: ^4.2.2
+64 silly placeDep ROOT @google-cloud/vision@3.1.3 REPLACE for: bot@1.0.0 want: ^3.1.3
+65 silly placeDep ROOT axios@1.4.0 REPLACE for: bot@1.0.0 want: ^1.4.0
+66 silly placeDep ROOT cheerio-httpcli@0.8.3 REPLACE for: bot@1.0.0 want: ^0.8.3
+67 silly placeDep ROOT discord.js@14.11.0 REPLACE for: bot@1.0.0 want: ^14.11.0
+68 silly placeDep ROOT fs@0.0.1-security REPLACE for: bot@1.0.0 want: ^0.0.1-security
+69 silly placeDep ROOT googleapis@116.0.0 REPLACE for: bot@1.0.0 want: ^116.0.0
+70 silly placeDep ROOT json-stringify-safe@5.0.1 REPLACE for: bot@1.0.0 want: ^5.0.1
+71 silly placeDep ROOT luxon@3.3.0 REPLACE for: bot@1.0.0 want: ^3.3.0
+72 silly placeDep ROOT openai@3.3.0 REPLACE for: bot@1.0.0 want: ^3.2.1
+73 timing idealTree:#root Completed in 6206ms
+74 timing idealTree:node_modules/@google-cloud/storage Completed in 0ms
+75 timing idealTree:node_modules/@google-cloud/video-intelligence Completed in 0ms
+76 timing idealTree:node_modules/@google-cloud/vision Completed in 0ms
+77 timing idealTree:node_modules/axios Completed in 1ms
+78 timing idealTree:node_modules/cheerio-httpcli Completed in 0ms
+79 timing idealTree:node_modules/discord.js Completed in 1ms
+80 timing idealTree:node_modules/fs Completed in 0ms
+81 timing idealTree:node_modules/googleapis Completed in 0ms
+82 timing idealTree:node_modules/json-stringify-safe Completed in 0ms
+83 timing idealTree:node_modules/luxon Completed in 0ms
+84 timing idealTree:node_modules/openai Completed in 0ms
+85 timing idealTree:buildDeps Completed in 6214ms
+86 timing idealTree:fixDepFlags Completed in 89ms
+87 timing idealTree Completed in 7894ms
+88 timing reify:loadTrees Completed in 7896ms
+89 timing reify:diffTrees Completed in 87ms
+90 silly reify mark retired [ '/home/container/node_modules/openai' ]
+91 silly reify moves {
+91 silly reify   '/home/container/node_modules/openai': '/home/container/node_modules/.openai-wASmNeTr'
+91 silly reify }
+92 timing reify:retireShallow Completed in 6ms
+93 timing reify:createSparse Completed in 1ms
+94 timing reify:loadBundles Completed in 0ms
+95 silly audit bulk request {
+95 silly audit   '@babel/parser': [ '7.21.4' ],
+95 silly audit   '@discordjs/builders': [ '1.6.3' ],
+95 silly audit   '@discordjs/collection': [ '1.5.1' ],
+95 silly audit   '@discordjs/formatters': [ '0.3.1' ],
+95 silly audit   '@discordjs/rest': [ '1.7.1' ],
+95 silly audit   '@discordjs/util': [ '0.3.1' ],
+95 silly audit   '@discordjs/ws': [ '0.8.3' ],
+95 silly audit   '@google-cloud/local-auth': [ '2.1.1' ],
+95 silly audit   '@google-cloud/paginator': [ '3.0.7' ],
+95 silly audit   '@google-cloud/projectify': [ '3.0.0' ],
+95 silly audit   '@google-cloud/promisify': [ '3.0.1' ],
+95 silly audit   uuid: [ '9.0.0', '8.3.2', '3.4.0' ],
+95 silly audit   '@grpc/grpc-js': [ '1.8.14' ],
+95 silly audit   '@grpc/proto-loader': [ '0.7.6' ],
+95 silly audit   '@jsdoc/salty': [ '0.2.5' ],
+95 silly audit   '@protobufjs/aspromise': [ '1.1.2' ],
+95 silly audit   '@protobufjs/base64': [ '1.1.2' ],
+95 silly audit   '@protobufjs/codegen': [ '2.0.4' ],
+95 silly audit   '@protobufjs/eventemitter': [ '1.1.0' ],
+95 silly audit   '@protobufjs/fetch': [ '1.1.0' ],
+95 silly audit   '@protobufjs/float': [ '1.0.2' ],
+95 silly audit   '@protobufjs/inquire': [ '1.1.0' ],
+95 silly audit   '@protobufjs/path': [ '1.1.2' ],
+95 silly audit   '@protobufjs/pool': [ '1.1.0' ],
+95 silly audit   '@protobufjs/utf8': [ '1.1.0' ],
+95 silly audit   '@sapphire/async-queue': [ '1.5.0' ],
+95 silly audit   '@sapphire/shapeshift': [ '3.9.0' ],
+95 silly audit   '@sapphire/snowflake': [ '3.5.1' ],
+95 silly audit   '@tokenizer/token': [ '0.3.0' ],
+95 silly audit   '@tootallnate/once': [ '2.0.0' ],
+95 silly audit   '@types/cheerio': [ '0.22.18' ],
+95 silly audit   '@types/glob': [ '8.1.0' ],
+95 silly audit   '@types/linkify-it': [ '3.0.2' ],
+95 silly audit   '@types/long': [ '4.0.2' ],
+95 silly audit   '@types/markdown-it': [ '12.2.3' ],
+95 silly audit   '@types/mdurl': [ '1.0.2' ],
+95 silly audit   '@types/minimatch': [ '5.1.2' ],
+95 silly audit   '@types/node': [ '14.18.42' ],
+95 silly audit   '@types/rimraf': [ '3.0.2' ],
+95 silly audit   '@types/rsvp': [ '4.0.4' ],
+95 silly audit   '@types/ws': [ '8.5.4' ],
+95 silly audit   '@vladfrangu/async_event_emitter': [ '2.2.2' ],
+95 silly audit   'abort-controller': [ '3.0.0' ],
+95 silly audit   acorn: [ '8.8.2' ],
+95 silly audit   'acorn-jsx': [ '5.3.2' ],
+95 silly audit   'agent-base': [ '6.0.2' ],
+95 silly audit   ajv: [ '6.12.6' ],
+95 silly audit   'ansi-regex': [ '5.0.1' ],
+95 silly audit   'ansi-styles': [ '4.3.0' ],
+95 silly audit   argparse: [ '2.0.1' ],
+95 silly audit   arrify: [ '2.0.1' ],
+95 silly audit   asn1: [ '0.2.6' ],
+95 silly audit   'assert-plus': [ '1.0.0' ],
+95 silly audit   async: [ '3.2.4' ],
+95 silly audit   'async-retry': [ '1.3.3' ],
+95 silly audit   asynckit: [ '0.4.0' ],
+95 silly audit   'available-typed-arrays': [ '1.0.5' ],
+95 silly audit   'aws-sign2': [ '0.7.0' ],
+95 silly audit   aws4: [ '1.12.0' ],
+95 silly audit   axios: [ '1.4.0', '0.26.1' ],
+95 silly audit   'balanced-match': [ '1.0.2' ],
+95 silly audit   'base64-js': [ '1.5.1' ],
+95 silly audit   'bcrypt-pbkdf': [ '1.0.2' ],
+95 silly audit   'bignumber.js': [ '9.1.1' ],
+95 silly audit   bl: [ '4.1.0' ],
+95 silly audit   bluebird: [ '3.7.2' ],
+95 silly audit   boolbase: [ '1.0.0' ],
+95 silly audit   'brace-expansion': [ '2.0.1', '1.1.11' ],
+95 silly audit   buffer: [ '5.7.1' ],
+95 silly audit   'buffer-equal-constant-time': [ '1.0.1' ],
+95 silly audit   busboy: [ '1.6.0' ],
+95 silly audit   'call-bind': [ '1.0.2' ],
+95 silly audit   callsites: [ '3.1.0' ],
+95 silly audit   caseless: [ '0.12.0' ],
+95 silly audit   catharsis: [ '0.9.0' ],
+95 silly audit   chalk: [ '4.1.2' ],
+95 silly audit   cheerio: [ '1.0.0-rc.12', '0.22.0' ],
+95 silly audit   'css-select': [ '5.1.0', '1.2.0' ],
+95 silly audit   'css-what': [ '6.1.0', '2.1.3' ],
+95 silly audit   'dom-serializer': [ '2.0.0', '0.1.1' ],
+95 silly audit   domelementtype: [ '2.3.0', '1.3.1' ],
+95 silly audit   domhandler: [ '5.0.3', '2.4.2' ],
+95 silly audit   domutils: [ '3.0.1', '1.5.1' ],
+95 silly audit   entities: [ '4.4.0', '2.1.0', '2.2.0', '1.1.2' ],
+95 silly audit   htmlparser2: [ '8.0.2', '3.10.1' ],
+95 silly audit   'nth-check': [ '2.1.1', '1.0.2' ],
+95 silly audit   'cheerio-select': [ '2.1.0' ],
+95 silly audit   cliui: [ '7.0.4' ],
+95 silly audit   'color-convert': [ '2.0.1' ],
+95 silly audit   'color-name': [ '1.1.4' ],
+95 silly audit   colors: [ '1.4.0' ],
+95 silly audit   'combined-stream': [ '1.0.8' ],
+95 silly audit   compressible: [ '2.0.18' ],
+95 silly audit   'concat-map': [ '0.0.1' ],
+95 silly audit   'core-util-is': [ '1.0.2' ],
+95 silly audit   cron: [ '2.3.0' ],
+95 silly audit   'cron-parser': [ '4.8.1' ],
+95 silly audit   'cross-spawn': [ '7.0.3' ],
+95 silly audit   dashdash: [ '1.14.1' ],
+95 silly audit   'data-uri-to-buffer': [ '4.0.1' ],
+95 silly audit   'date-fns': [ '2.29.3' ],
+95 silly audit   'date-fns-tz': [ '2.0.0' ],
+95 silly audit   debug: [ '4.3.4', '3.2.7', '2.6.9' ],
+95 silly audit   'deep-is': [ '0.1.4' ],
+95 silly audit   deferential: [ '1.0.0' ],
+95 silly audit   'delayed-stream': [ '1.0.0' ],
+95 silly audit   'discord-api-types': [ '0.37.42' ],
+95 silly audit   dotenv: [ '16.0.3' ],
+95 silly audit   duplexify: [ '4.1.2' ],
+95 silly audit   'ecc-jsbn': [ '0.1.2' ],
+95 silly audit   'ecdsa-sig-formatter': [ '1.0.11' ],
+95 silly audit   'emoji-regex': [ '8.0.0' ],
+95 silly audit   'end-of-stream': [ '1.4.4' ],
+95 silly audit   ent: [ '2.2.0' ],
+95 silly audit   escalade: [ '3.1.1' ],
+95 silly audit   'escape-string-regexp': [ '2.0.0' ],
+95 silly audit   escodegen: [ '1.14.3' ],
+95 silly audit   estraverse: [ '4.3.0', '5.3.0' ],
+95 silly audit   'eslint-visitor-keys': [ '3.4.0' ],
+95 silly audit   espree: [ '9.5.1' ],
+95 silly audit   esprima: [ '4.0.1' ],
+95 silly audit   esutils: [ '2.0.3' ],
+95 silly audit   'event-target-shim': [ '5.0.1' ],
+95 silly audit   execa: [ '4.1.0' ],
+95 silly audit   extend: [ '3.0.2' ],
+95 silly audit   extsprintf: [ '1.3.0' ],
+95 silly audit   'fast-deep-equal': [ '3.1.3' ],
+95 silly audit   'fast-json-stable-stringify': [ '2.1.0' ],
+95 silly audit   'fast-levenshtein': [ '2.0.6' ],
+95 silly audit   'fast-text-encoding': [ '1.0.6' ],
+95 silly audit   'fetch-blob': [ '3.2.0' ],
+95 silly audit   ffmpeg: [ '0.0.4' ],
+95 silly audit   ffprobe: [ '1.1.2' ],
+95 silly audit   'ffprobe-static': [ '3.1.0' ],
+95 silly audit   'file-type': [ '18.4.0' ],
+95 silly audit   'fluent-ffmpeg': [ '2.1.2' ],
+95 silly audit   which: [ '1.3.1', '2.0.2' ],
+95 silly audit   'follow-redirects': [ '1.15.2' ],
+95 silly audit   'for-each': [ '0.3.3' ],
+95 silly audit   foreach: [ '2.0.6' ],
+95 silly audit   'forever-agent': [ '0.6.1' ],
+95 silly audit   'form-data': [ '4.0.0', '2.3.3' ],
+95 silly audit   'formdata-polyfill': [ '4.0.10' ],
+95 silly audit   'fs.realpath': [ '1.0.0' ],
+95 silly audit   'function-bind': [ '1.1.1' ],
+95 silly audit   gaxios: [ '5.1.0' ],
+95 silly audit   'node-fetch': [ '2.6.9', '3.3.1' ],
+95 silly audit   'gcp-metadata': [ '5.2.0' ],
+95 silly audit   'get-caller-file': [ '2.0.5' ],
+95 silly audit   'get-intrinsic': [ '1.2.0' ],
+95 silly audit   'get-stream': [ '5.2.0' ],
+95 silly audit   getpass: [ '0.1.7' ],
+95 silly audit   glob: [ '8.1.0', '7.2.3' ],
+95 silly audit   'google-auth-library': [ '8.7.0' ],
+95 silly audit   'google-gax': [ '3.6.0' ],
+95 silly audit   'google-p12-pem': [ '4.0.1' ],
+95 silly audit   'googleapis-common': [ '6.0.4' ],
+95 silly audit   qs: [ '6.11.1', '6.5.3' ],
+95 silly audit   gopd: [ '1.0.1' ],
+95 silly audit   'graceful-fs': [ '4.2.11' ],
+95 silly audit   gtoken: [ '6.1.2' ],
+95 silly audit   'har-schema': [ '2.0.0' ],
+95 silly audit   'har-validator': [ '5.1.5' ],
+95 silly audit   has: [ '1.0.3' ],
+95 silly audit   'has-flag': [ '4.0.0' ],
+95 silly audit   'has-symbols': [ '1.0.3' ],
+95 silly audit   'has-tostringtag': [ '1.0.0' ],
+95 silly audit   he: [ '1.2.0' ],
+95 silly audit   'http-proxy-agent': [ '5.0.0' ],
+95 silly audit   'http-signature': [ '1.2.0' ],
+95 silly audit   'https-proxy-agent': [ '5.0.1' ],
+95 silly audit   'human-signals': [ '1.1.1' ],
+95 silly audit   'iconv-lite': [ '0.6.3', '0.4.24' ],
+95 silly audit   ieee754: [ '1.2.1' ],
+95 silly audit   'import-fresh': [ '3.3.0' ],
+95 silly audit   inflight: [ '1.0.6' ],
+95 silly audit   inherits: [ '2.0.4' ],
+95 silly audit   'invert-kv': [ '3.0.1' ],
+95 silly audit   is: [ '3.3.0' ],
+95 silly audit   'is-arguments': [ '1.1.1' ],
+95 silly audit   'is-callable': [ '1.2.7' ],
+95 silly audit   'is-docker': [ '2.2.1' ],
+95 silly audit   'is-fullwidth-code-point': [ '3.0.0' ],
+95 silly audit   'is-generator-function': [ '1.0.10' ],
+95 silly audit   'is-stream': [ '2.0.1' ],
+95 silly audit   'is-stream-ended': [ '0.1.4' ],
+95 silly audit   'is-typed-array': [ '1.1.10' ],
+95 silly audit   'is-typedarray': [ '1.0.0' ],
+95 silly audit   'is-wsl': [ '2.2.0' ],
+95 silly audit   isexe: [ '2.0.0' ],
+95 silly audit   isstream: [ '0.1.2' ],
+95 silly audit   js2xmlparser: [ '4.0.2' ],
+95 silly audit   jsbn: [ '0.1.1' ],
+95 silly audit   jschardet: [ '3.0.0' ],
+95 silly audit   jsdoc: [ '4.0.2' ],
+95 silly audit   'json-bigint': [ '1.0.0' ],
+95 silly audit   'json-schema': [ '0.4.0' ],
+95 silly audit   'json-schema-traverse': [ '0.4.1' ],
+95 silly audit   jsonparse: [ '1.3.1' ],
+95 silly audit   JSONStream: [ '1.3.5' ],
+95 silly audit   jsprim: [ '1.4.2' ],
+95 silly audit   jwa: [ '2.0.0' ],
+95 silly audit   jws: [ '4.0.0' ],
+95 silly audit   klaw: [ '3.0.0' ],
+95 silly audit   lcid: [ '3.1.1' ],
+95 silly audit   levn: [ '0.3.0' ],
+95 silly audit   'linkify-it': [ '3.0.3' ],
+95 silly audit   lodash: [ '4.17.21' ],
+95 silly audit   'lodash.assignin': [ '4.2.0' ],
+95 silly audit   'lodash.bind': [ '4.2.1' ],
+95 silly audit   'lodash.camelcase': [ '4.3.0' ],
+95 silly audit   'lodash.defaults': [ '4.2.0' ],
+95 silly audit   'lodash.filter': [ '4.6.0' ],
+95 silly audit   'lodash.flatten': [ '4.4.0' ],
+95 silly audit   'lodash.foreach': [ '4.5.0' ],
+95 silly audit   'lodash.map': [ '4.6.0' ],
+95 silly audit   'lodash.merge': [ '4.6.2' ],
+95 silly audit   'lodash.pick': [ '4.4.0' ],
+95 silly audit   'lodash.reduce': [ '4.6.0' ],
+95 silly audit   'lodash.reject': [ '4.6.0' ],
+95 silly audit   'lodash.snakecase': [ '4.1.1' ],
+95 silly audit   'lodash.some': [ '4.6.0' ],
+95 silly audit   long: [ '4.0.0', '5.2.3' ],
+95 silly audit   'long-timeout': [ '0.1.1' ],
+95 silly audit   'lru-cache': [ '6.0.0' ],
+95 silly audit   'map-age-cleaner': [ '0.1.3' ],
+95 silly audit   'markdown-it': [ '12.3.2' ],
+95 silly audit   'markdown-it-anchor': [ '8.6.7' ],
+95 silly audit   marked: [ '4.3.0' ],
+95 silly audit   mdurl: [ '1.0.1' ],
+95 silly audit   mem: [ '5.1.1' ],
+95 silly audit   'merge-stream': [ '2.0.0' ],
+95 silly audit   mime: [ '3.0.0' ],
+95 silly audit   'mime-db': [ '1.52.0' ],
+95 silly audit   'mime-types': [ '2.1.35' ],
+95 silly audit   'mimic-fn': [ '2.1.0' ],
+95 silly audit   minimatch: [ '5.1.6', '3.1.2' ],
+95 silly audit   minimist: [ '1.2.8' ],
+95 silly audit   mkdirp: [ '1.0.4' ],
+95 silly audit   moment: [ '2.29.4' ],
+95 silly audit   'moment-timezone': [ '0.5.43' ],
+95 silly audit   ms: [ '2.1.2', '2.0.0' ],
+95 silly audit   'native-promise-only': [ '0.8.1' ],
+95 silly audit   needle: [ '2.9.1' ],
+95 silly audit   'node-cron': [ '3.0.2' ],
+95 silly audit   'node-domexception': [ '1.0.0' ],
+95 silly audit   'node-forge': [ '1.3.1' ],
+95 silly audit   'node-schedule': [ '2.1.1' ],
+95 silly audit   'npm-run-path': [ '4.0.1' ],
+95 silly audit   'oauth-sign': [ '0.9.0' ],
+95 silly audit   'object-assign': [ '4.1.1' ],
+95 silly audit   'object-hash': [ '3.0.0' ],
+95 silly audit   'object-inspect': [ '1.12.3' ],
+95 silly audit   once: [ '1.4.0' ],
+95 silly audit   onetime: [ '5.1.2' ],
+95 silly audit   open: [ '7.4.2' ],
+95 silly audit   optionator: [ '0.8.3' ],
+95 silly audit   'os-locale': [ '5.0.0' ],
+95 silly audit   'p-defer': [ '1.0.0' ],
+95 silly audit   'p-is-promise': [ '2.1.0' ],
+95 silly audit   'p-limit': [ '3.1.0' ],
+95 silly audit   'parent-module': [ '1.0.1' ],
+95 silly audit   parse5: [ '7.1.2' ],
+95 silly audit   'parse5-htmlparser2-tree-adapter': [ '7.0.0' ],
+95 silly audit   'path-is-absolute': [ '1.0.1' ],
+95 silly audit   'path-key': [ '3.1.1' ],
+95 silly audit   'peek-readable': [ '5.0.0' ],
+95 silly audit   'performance-now': [ '2.1.0' ],
+95 silly audit   'prelude-ls': [ '1.1.2' ],
+95 silly audit   prettyjson: [ '1.2.5' ],
+95 silly audit   'probe-image-size': [ '7.2.3' ],
+95 silly audit   'proto3-json-serializer': [ '1.1.0' ],
+95 silly audit   protobufjs: [ '7.2.3' ],
+95 silly audit   'protobufjs-cli': [ '1.1.1' ],
+95 silly audit   'proxy-from-env': [ '1.1.0' ],
+95 silly audit   psl: [ '1.9.0' ],
+95 silly audit   pump: [ '3.0.0' ],
+95 silly audit   punycode: [ '2.3.0' ],
+95 silly audit   'readable-stream': [ '3.6.2' ],
+95 silly audit   'readable-web-to-node-stream': [ '3.0.2' ],
+95 silly audit   request: [ '2.88.2' ],
+95 silly audit   'require-directory': [ '2.1.1' ],
+95 silly audit   requizzle: [ '0.2.4' ],
+95 silly audit   'resolve-from': [ '4.0.0' ],
+95 silly audit   retry: [ '0.13.1' ],
+95 silly audit   'retry-request': [ '5.0.2' ],
+95 silly audit   rimraf: [ '3.0.2' ],
+95 silly audit   'rss-parser': [ '3.13.0' ],
+95 silly audit   rsvp: [ '4.8.5' ],
+95 silly audit   'safe-buffer': [ '5.2.1' ],
+95 silly audit   'safer-buffer': [ '2.1.2' ],
+95 silly audit   sax: [ '1.2.4' ],
+95 silly audit   semver: [ '7.4.0' ],
+95 silly audit   'server-destroy': [ '1.0.1' ],
+95 silly audit   'shebang-command': [ '2.0.0' ],
+95 silly audit   'shebang-regex': [ '3.0.0' ],
+95 silly audit   'side-channel': [ '1.0.4' ],
+95 silly audit   'signal-exit': [ '3.0.7' ],
+95 silly audit   'sorted-array-functions': [ '1.3.0' ],
+95 silly audit   'source-map': [ '0.6.1' ],
+95 silly audit   sshpk: [ '1.17.0' ],
+95 silly audit   'stream-events': [ '1.0.5' ],
+95 silly audit   'stream-parser': [ '0.3.1' ],
+95 silly audit   'stream-shift': [ '1.0.1' ],
+95 silly audit   streamsearch: [ '1.1.0' ],
+95 silly audit   string_decoder: [ '1.3.0' ],
+95 silly audit   'string-width': [ '4.2.3' ],
+95 silly audit   'strip-ansi': [ '6.0.1' ],
+95 silly audit   'strip-final-newline': [ '2.0.0' ],
+95 silly audit   'strip-json-comments': [ '3.1.1' ],
+95 silly audit   strtok3: [ '7.0.0' ],
+95 silly audit   stubs: [ '3.0.0' ],
+95 silly audit   'supports-color': [ '7.2.0' ],
+95 silly audit   'teeny-request': [ '8.0.3' ],
+95 silly audit   through: [ '2.3.8' ],
+95 silly audit   tmp: [ '0.2.1' ],
+95 silly audit   'token-types': [ '5.0.1' ],
+95 silly audit   'tough-cookie': [ '2.5.0' ],
+95 silly audit   tr46: [ '0.0.3' ],
+95 silly audit   'ts-mixer': [ '6.0.3' ],
+95 silly audit   tslib: [ '2.5.2' ],
+95 silly audit   'tunnel-agent': [ '0.6.0' ],
+95 silly audit   tweetnacl: [ '0.14.5' ],
+95 silly audit   'type-check': [ '0.3.2' ],
+95 silly audit   'type-of': [ '2.0.1' ],
+95 silly audit   'uc.micro': [ '1.0.6' ],
+95 silly audit   'uglify-js': [ '3.17.4' ],
+95 silly audit   underscore: [ '1.13.6' ],
+95 silly audit   undici: [ '5.22.1' ],
+95 silly audit   'uri-js': [ '4.4.1' ],
+95 silly audit   'url-template': [ '2.0.8' ],
+95 silly audit   util: [ '0.12.5' ],
+95 silly audit   'util-deprecate': [ '1.0.2' ],
+95 silly audit   'valid-url': [ '1.0.9' ],
+95 silly audit   verror: [ '1.10.0' ],
+95 silly audit   'web-streams-polyfill': [ '3.2.1' ],
+95 silly audit   'webidl-conversions': [ '3.0.1' ],
+95 silly audit   'whatwg-url': [ '5.0.0' ],
+95 silly audit   when: [ '3.7.8' ],
+95 silly audit   'which-typed-array': [ '1.1.9' ],
+95 silly audit   'word-wrap': [ '1.2.3' ],
+95 silly audit   'wrap-ansi': [ '7.0.0' ],
+95 silly audit   wrappy: [ '1.0.2' ],
+95 silly audit   ws: [ '8.13.0' ],
+95 silly audit   xml2js: [ '0.5.0' ],
+95 silly audit   xmlbuilder: [ '11.0.1' ],
+95 silly audit   xmlcreate: [ '2.0.4' ],
+95 silly audit   y18n: [ '5.0.8' ],
+95 silly audit   yallist: [ '4.0.0' ],
+95 silly audit   yargs: [ '16.2.0' ],
+95 silly audit   'yargs-parser': [ '20.2.9' ],
+95 silly audit   'yocto-queue': [ '0.1.0' ],
+95 silly audit   '@google-cloud/storage': [ '6.11.0' ],
+95 silly audit   '@google-cloud/video-intelligence': [ '4.2.2' ],
+95 silly audit   '@google-cloud/vision': [ '3.1.3' ],
+95 silly audit   'cheerio-httpcli': [ '0.8.3' ],
+95 silly audit   'discord.js': [ '14.11.0' ],
+95 silly audit   fs: [ '0.0.1-security' ],
+95 silly audit   googleapis: [ '116.0.0' ],
+95 silly audit   'json-stringify-safe': [ '5.0.1' ],
+95 silly audit   luxon: [ '3.3.0' ],
+95 silly audit   openai: [ '3.3.0' ]
+95 silly audit }
+96 silly tarball no local data for openai@https://registry.npmjs.org/openai/-/openai-3.3.0.tgz. Extracting by manifest.
+97 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 186ms
+98 timing auditReport:getReport Completed in 202ms
+99 silly audit report {
+99 silly audit report   'nth-check': [
+99 silly audit report     {
+99 silly audit report       id: 1092100,
+99 silly audit report       url: 'https://github.com/advisories/GHSA-rp65-9cf3-cjxr',
+99 silly audit report       title: 'Inefficient Regular Expression Complexity in nth-check',
+99 silly audit report       severity: 'high',
+99 silly audit report       vulnerable_versions: '<2.0.1',
+99 silly audit report       cwe: [Array],
+99 silly audit report       cvss: [Object]
+99 silly audit report     }
+99 silly audit report   ],
+99 silly audit report   request: [
+99 silly audit report     {
+99 silly audit report       id: 1091725,
+99 silly audit report       url: 'https://github.com/advisories/GHSA-p8p7-x288-28g6',
+99 silly audit report       title: 'Server-Side Request Forgery in Request',
+99 silly audit report       severity: 'moderate',
+99 silly audit report       vulnerable_versions: '<=2.88.2',
+99 silly audit report       cwe: [Array],
+99 silly audit report       cvss: [Object]
+99 silly audit report     }
+99 silly audit report   ],
+99 silly audit report   semver: [
+99 silly audit report     {
+99 silly audit report       id: 1092310,
+99 silly audit report       url: 'https://github.com/advisories/GHSA-c2qf-rxjj-qqgw',
+99 silly audit report       title: 'semver vulnerable to Regular Expression Denial of Service',
+99 silly audit report       severity: 'moderate',
+99 silly audit report       vulnerable_versions: '<7.5.2',
+99 silly audit report       cwe: [Array],
+99 silly audit report       cvss: [Object]
+99 silly audit report     }
+99 silly audit report   ]
+99 silly audit report }
+100 timing metavuln:cache:get:security-advisory:semver:I4c32oeABjRQ7pSB09QCFLZcMmoOZJ7CcL65eBKepUY9VufCkv7209hlPOkVcQCPmmughIXfDgj9552srK+lJQ== Completed in 2ms
+101 timing metavuln:cache:get:security-advisory:nth-check:VShbb2pbM9iksRuYGUI6WhS0c/9djVcfoEfWXIwFzEBhRVrRSuTCDa9vjezd0osgxCl3EdqFIbu2HDodpf6EMw== Completed in 14ms
+102 timing metavuln:cache:get:security-advisory:request:FnfdbROYvhIvLXlyoCxSSx8bViC9ql5CpEoHBRMANr9SovQth2yAv4XvirMLy/Xm27LclHTb7yVYR3nh2lzexQ== Completed in 13ms
+103 http fetch GET 200 https://registry.npmjs.org/openai/-/openai-3.3.0.tgz 209ms (cache miss)
+104 timing reifyNode:node_modules/openai Completed in 276ms
+105 timing reify:unpack Completed in 276ms
+106 timing reify:unretire Completed in 4ms
+107 timing build:queue Completed in 0ms
+108 timing build:deps Completed in 1ms
+109 timing build Completed in 2ms
+110 timing reify:build Completed in 3ms
+111 http fetch GET 200 https://registry.npmjs.org/nth-check 189ms (cache revalidated)
+112 timing metavuln:packument:nth-check Completed in 190ms
+113 timing metavuln:load:security-advisory:nth-check:1092100 Completed in 0ms
+114 timing metavuln:calculate:security-advisory:nth-check:1092100 Completed in 192ms
+115 http fetch GET 200 https://registry.npmjs.org/request 192ms (cache revalidated)
+116 timing metavuln:packument:request Completed in 194ms
+117 timing metavuln:load:security-advisory:request:1091725 Completed in 3ms
+118 timing metavuln:calculate:security-advisory:request:1091725 Completed in 197ms
+119 timing reify:trash Completed in 97ms
+120 timing reify:save Completed in 691ms
+121 http fetch GET 200 https://registry.npmjs.org/semver 1084ms (cache updated)
+122 timing metavuln:packument:semver Completed in 1087ms
+123 timing metavuln:load:security-advisory:semver:1092310 Completed in 13ms
+124 timing metavuln:cache:put:security-advisory:semver:I4c32oeABjRQ7pSB09QCFLZcMmoOZJ7CcL65eBKepUY9VufCkv7209hlPOkVcQCPmmughIXfDgj9552srK+lJQ== Completed in 77ms
+125 timing metavuln:calculate:security-advisory:semver:1092310 Completed in 1178ms
+126 timing metavuln:cache:get:security-advisory:css-select:6Q3WcbvCox+C7jCzBi55fZu7PzLgUFPqZ7bcQ5yyZqIQMyth+QuMQSRfPoYl0ho+43ONGo8WToe5RX6Nmn+azg== Completed in 3ms
+127 http fetch GET 200 https://registry.npmjs.org/css-select 43ms (cache revalidated)
+128 timing metavuln:packument:css-select Completed in 46ms
+129 timing metavuln:load:security-advisory:css-select:VShbb2pbM9iksRuYGUI6WhS0c/9djVcfoEfWXIwFzEBhRVrRSuTCDa9vjezd0osgxCl3EdqFIbu2HDodpf6EMw== Completed in 1ms
+130 timing metavuln:calculate:security-advisory:css-select:VShbb2pbM9iksRuYGUI6WhS0c/9djVcfoEfWXIwFzEBhRVrRSuTCDa9vjezd0osgxCl3EdqFIbu2HDodpf6EMw== Completed in 47ms
+131 timing metavuln:packument:cheerio-httpcli Completed in 0ms
+132 timing metavuln:cache:get:security-advisory:cheerio-httpcli:ugDPjs02txf4xBSytOYgrRWQer2gJ96iIXVPoi6dPjfvhX84AJlLD62RVa7GWolWGSJCks4qu5UHxqst+6S1DA== Completed in 4ms
+133 timing metavuln:load:security-advisory:cheerio-httpcli:FnfdbROYvhIvLXlyoCxSSx8bViC9ql5CpEoHBRMANr9SovQth2yAv4XvirMLy/Xm27LclHTb7yVYR3nh2lzexQ== Completed in 1ms
+134 timing metavuln:calculate:security-advisory:cheerio-httpcli:FnfdbROYvhIvLXlyoCxSSx8bViC9ql5CpEoHBRMANr9SovQth2yAv4XvirMLy/Xm27LclHTb7yVYR3nh2lzexQ== Completed in 5ms
+135 timing metavuln:cache:get:security-advisory:protobufjs-cli:TWC441IHiuUWdqdj+9fPu9X9HTTziJqvc2V6ZH8vFTxu4JLhWljeVW0CzMCYJBethbEYJM6aoxcpQ17nv7w0aw== Completed in 1ms
+136 http fetch GET 200 https://registry.npmjs.org/protobufjs-cli 44ms (cache revalidated)
+137 timing metavuln:packument:protobufjs-cli Completed in 45ms
+138 timing metavuln:load:security-advisory:protobufjs-cli:I4c32oeABjRQ7pSB09QCFLZcMmoOZJ7CcL65eBKepUY9VufCkv7209hlPOkVcQCPmmughIXfDgj9552srK+lJQ== Completed in 4ms
+139 timing metavuln:cache:put:security-advisory:protobufjs-cli:TWC441IHiuUWdqdj+9fPu9X9HTTziJqvc2V6ZH8vFTxu4JLhWljeVW0CzMCYJBethbEYJM6aoxcpQ17nv7w0aw== Completed in 5ms
+140 timing metavuln:calculate:security-advisory:protobufjs-cli:I4c32oeABjRQ7pSB09QCFLZcMmoOZJ7CcL65eBKepUY9VufCkv7209hlPOkVcQCPmmughIXfDgj9552srK+lJQ== Completed in 55ms
+141 timing metavuln:cache:get:security-advisory:cheerio:fCCq494FCySermGkOjN0nw2MjaxETagsuZN73K1VAztrM71b0VKLkaDXqy9jvSEXMkeED6Z3SX+QtigXtHq/Yg== Completed in 3ms
+142 http fetch GET 200 https://registry.npmjs.org/cheerio 39ms (cache revalidated)
+143 timing metavuln:packument:cheerio Completed in 43ms
+144 timing metavuln:load:security-advisory:cheerio:6Q3WcbvCox+C7jCzBi55fZu7PzLgUFPqZ7bcQ5yyZqIQMyth+QuMQSRfPoYl0ho+43ONGo8WToe5RX6Nmn+azg== Completed in 1ms
+145 timing metavuln:calculate:security-advisory:cheerio:6Q3WcbvCox+C7jCzBi55fZu7PzLgUFPqZ7bcQ5yyZqIQMyth+QuMQSRfPoYl0ho+43ONGo8WToe5RX6Nmn+azg== Completed in 44ms
+146 timing metavuln:cache:get:security-advisory:cheerio-httpcli:SuNWwEVfblOopBReX3yT7bPakWSKQZP5sJ3r/FE8LmeBP9G2rANf/q/IG6prsUcPogZV3f4ybfSMMnkr1xzpMQ== Completed in 37ms
+147 timing metavuln:load:security-advisory:cheerio-httpcli:fCCq494FCySermGkOjN0nw2MjaxETagsuZN73K1VAztrM71b0VKLkaDXqy9jvSEXMkeED6Z3SX+QtigXtHq/Yg== Completed in 1ms
+148 timing metavuln:calculate:security-advisory:cheerio-httpcli:fCCq494FCySermGkOjN0nw2MjaxETagsuZN73K1VAztrM71b0VKLkaDXqy9jvSEXMkeED6Z3SX+QtigXtHq/Yg== Completed in 38ms
+149 timing auditReport:init Completed in 1382ms
+150 timing reify:audit Completed in 1588ms
+151 timing reify Completed in 9669ms
+152 silly CHANGE node_modules/openai
+153 timing command:install Completed in 9713ms
+154 notice
+154 notice New [33mminor[39m version of npm available! [31m9.5.0[39m -> [32m9.7.2[39m
+154 notice Changelog: [36mhttps://github.com/npm/cli/releases/tag/v9.7.2[39m
+154 notice Run [32mnpm install -g npm@9.7.2[39m to update!
+154 notice
+155 verbose exit 0
+156 timing npm Completed in 9832ms
+157 info ok

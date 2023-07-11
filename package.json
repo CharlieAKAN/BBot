@@ -1,0 +1,42 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.1",
+    "@google-cloud/storage": "^6.11.0",
+    "@google-cloud/video-intelligence": "^4.2.3",
+    "@google-cloud/vision": "^3.1.4",
+    "axios": "^1.4.0",
+    "cheerio": "^1.0.0-rc.12",
+    "cheerio-httpcli": "^0.8.3",
+    "cron": "^2.3.0",
+    "date-fns-tz": "^2.0.0",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.0.3",
+    "ffmpeg": "^0.0.4",
+    "ffprobe": "^1.1.2",
+    "ffprobe-static": "^3.1.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "^0.0.1-security",
+    "googleapis": "^116.0.0",
+    "json-stringify-safe": "^5.0.1",
+    "luxon": "^3.3.0",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
+    "node-cron": "^3.0.2",
+    "node-fetch": "^3.3.1",
+    "node-schedule": "^2.1.1",
+    "openai": "^3.3.0",
+    "probe-image-size": "^7.2.3",
+    "rss-parser": "^3.13.0",
+    "util": "^0.12.5"
+  }
+}
