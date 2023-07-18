@@ -69,6 +69,7 @@ module.exports = {
     const gameAliases = {
       'destiny 2': 'destiny',
       'sot': 'sea of thieves',
+      'cod': 'call of duty',
       // Add more aliases here...
     };
 
@@ -76,7 +77,7 @@ module.exports = {
     const gameImages = {
       'sea of thieves': 'https://media.discordapp.net/attachments/93073155496636416/1094156601746800650/Sea_of_Thieves_4_8_2023_3_06_36_AM.png?width=1333&height=750',
       'destiny': 'https://cdn.discordapp.com/attachments/808508638918475808/1111460724213039104/fireteam-witch-queen-hardmode_6kjk.1280.webp',
-      // Add more games and their images here...
+      'call of duty': 'https://cdn.discordapp.com/attachments/808508638918475808/1130986958387155065/maxresdefault.jpg',
     };
     
     if (gameNameLower in gameAliases) {

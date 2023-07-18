@@ -1,42 +1,42 @@
-const { Client } = require('threads-api');
-const Discord = require('discord.js');
+const { ThreadsAPI } = require('threads-api');
 
-// Initialize the Threads API client
-const threadsClient = new Client();
+// Create an instance of the ThreadsAPI class
+const threadsAPI = new ThreadsAPI();
 
-// Map of Thread account names to Discord channel IDs
-const channelMap = {
-  'iamcharcharr': '1111704492904296460', // replace with the actual channel ID
-  // add more mappings as needed
-};
+// Store the ID of the last thread that was posted for each Thread account
+let lastThreadIds = {};
 
-// Function to fetch and send posts
-async function fetchAndSendPosts() {
-  // Loop over each entry in the channel map
-  for (const [accountName, channelId] of Object.entries(channelMap)) {
-    // Fetch the latest post from the Thread account
-    const posts = await threadsClient.getPosts(accountName);
+// Function to check for new threads and post them to a Discord channel
+async function checkForNewThreads(threadUsername, channel) {
+  try {
+    // Get the user ID from the username
+    const userId = await threadsAPI.getUserIDfromUsername(threadUsername);
 
-    // Check if there are any posts
-    if (posts.length > 0) {
-      // Get the latest post
-      const post = posts[0];
+    // Get the latest threads from the Thread account
+    const threads = await threadsAPI.getUserProfileThreads(userId);
 
-      // Get the Discord channel
-      const channel = client.channels.cache.get(channelId);
+    // If there are any threads and the latest one is not the same as the last one that was posted
+    if (threads.length > 0 && threads[0].id !== lastThreadIds[threadUsername]) {
+      // Update the last thread ID for the Thread account
+      lastThreadIds[threadUsername] = threads[0].id;
 
-      // Create a new Discord message embed
-      const embed = new Discord.EmbedBuilder()
-        .setTitle(post.title)
-        .setDescription(post.description)
-        .setURL(post.url)
-        .setTimestamp(post.date);
-
-      // Send the embed to the channel
-      channel.send(embed);
+      // Send a message to the channel with the new thread
+      channel.send(`New thread posted: ${threads[0].title}\n${threads[0].url}`);
     }
+  } catch (error) {
+    console.error(`Error getting threads: ${error}`);
   }
 }
 
-// Export the function
-module.exports = fetchAndSendPosts;
+// Export a function that takes bot as a parameter and starts checking for new threads
+module.exports = function(bot) {
+  bot.on('ready', () => {
+    const threadAccounts = ['iamcharcharr', 'thread-account-2', /* ... */];
+    const channelIds = ['1095471998831960216', 'discord-channel-id-2', /* ... */];
+
+    threadAccounts.forEach((threadAccount, index) => {
+      const channel = bot.channels.cache.get(channelIds[index]);
+      setInterval(() => checkForNewThreads(threadAccount, channel), 30 * 1000);
+    });
+  });
+};

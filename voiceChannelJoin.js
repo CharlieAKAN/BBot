@@ -16,7 +16,7 @@ module.exports = async (oldState, newState) => {
   if (newState.channel?.name === voiceChannelName && member.roles.cache.some(memberRole => allowedRoles.includes(memberRole.name))) {
     usersInChannel.add(member.id);
 
-    if (usersInChannel.size === 1 && !isSending) {
+    if (usersInChannel.size === 1) {
       isSending = true;
 
       setTimeout(async () => {
@@ -37,7 +37,7 @@ module.exports = async (oldState, newState) => {
           const member = reaction.message.guild.members.cache.get(user.id);
           await member.roles.add(role).catch(console.error);
 
-          const notificationChannel = newState.guild.channels.cache.get('539653049975570433');
+          const notificationChannel = newState.guild.channels.cache.get('539653049975570433'); 
           if (notificationChannel) {
             try {
               await notificationChannel.send(`${user}, your 'Join Streamers' role has been assigned, and you can join the 'Streamer VC' when you're ready.`);
@@ -48,7 +48,7 @@ module.exports = async (oldState, newState) => {
         });
 
         isSending = false;
-      }, 1800000);
+      }, 1800000 ); 
     }
   }
 

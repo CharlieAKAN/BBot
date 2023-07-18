@@ -12,7 +12,7 @@ const util = require('util');
 const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
-const fetchAndSendPosts = require('./threads.js');
+const startCheckingForNewThreads = require('./threads.js');
 
 
 let imageDescriptionMap = new Map();
@@ -198,8 +198,7 @@ client.on('ready', () => {
   
   youtubeHandler(client);
   setInterval(() => youtubeHandler(client), 600000);
-  
-  setInterval(fetchAndSendPosts, 10 * 1000);
+  startCheckingForNewThreads(client);
 
   console.log('The bot is online!');
 });
