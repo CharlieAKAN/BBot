@@ -12,7 +12,7 @@ const util = require('util');
 const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
-const startCheckingForNewThreads = require('./threads.js');
+
 
 
 let imageDescriptionMap = new Map();
@@ -202,6 +202,8 @@ client.on('ready', () => {
 
   console.log('The bot is online!');
 });
+
+const startCheckingForNewThreads = require('./threads.js');
 
 client.on('messageCreate', async (message) => {
   const videoLinkMoved = await handleVideoLinks(message);
