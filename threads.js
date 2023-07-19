@@ -82,7 +82,7 @@ module.exports = function(bot) {
   bot.on('ready', () => {
     console.log('Bot is ready in threads.js');
     const threadAccounts = ['groundnews', 'seaofthievesgame', 'destinythegame', 'playdiablo', 'charlieintel', 'pokemontcg', 'discussingfilm', 'marvel', 'falconbrickstudios',];
-    const channelIds = ['1111704492904296460', '1098639569982865431', '1095471998831960216', '1095471988325236907', '1095471976228860035', '1095086297128898731', '1094787856985247754', '1094787824886227037', '1095045656839737394',];
+    const channelIds = ['1088969247419531386', '603334971066810381', '1118749148951355392', '1118749443030777907', '1121847826209570948', '828765365470363689', '1088662067566878841', '831224568903237642', '830960829980606485',];
 
     threadAccounts.forEach((threadAccount, index) => {
       const channel = bot.channels.cache.get(channelIds[index]);
