@@ -192,18 +192,20 @@ const setRandomStatus = () => {
   client.user.setActivity(status[random]);
 };
 
+const startCheckingForNewThreads = require('./threads.js');
+startCheckingForNewThreads(client);
+
+
 client.on('ready', () => {
   setRandomStatus(); // Set the status immediately when the bot is online
   setInterval(setRandomStatus, 3600000); // Change the status every hour (3600000 milliseconds)
   
   youtubeHandler(client);
   setInterval(() => youtubeHandler(client), 600000);
-  startCheckingForNewThreads(client);
 
   console.log('The bot is online!');
 });
 
-const startCheckingForNewThreads = require('./threads.js');
 
 client.on('messageCreate', async (message) => {
   const videoLinkMoved = await handleVideoLinks(message);

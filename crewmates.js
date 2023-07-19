@@ -78,6 +78,8 @@ module.exports = {
       'sea of thieves': 'https://media.discordapp.net/attachments/93073155496636416/1094156601746800650/Sea_of_Thieves_4_8_2023_3_06_36_AM.png?width=1333&height=750',
       'destiny': 'https://cdn.discordapp.com/attachments/808508638918475808/1111460724213039104/fireteam-witch-queen-hardmode_6kjk.1280.webp',
       'call of duty': 'https://cdn.discordapp.com/attachments/808508638918475808/1130986958387155065/maxresdefault.jpg',
+      'fortnite': 'https://cdn.discordapp.com/attachments/808508638918475808/1131028388048556042/594a75b6948a3d4580b3586579d0c551_resize680383_.jpg',
+      'exoprmal': 'https://cdn.discordapp.com/attachments/808508638918475808/1131031027897356440/EXOPRIMAL_VS-T.-Rex.webp',
     };
     
     if (gameNameLower in gameAliases) {

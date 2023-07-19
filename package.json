@@ -38,6 +38,7 @@
     "probe-image-size": "^7.2.3",
     "rss-parser": "^3.13.0",
     "threads-api": "^1.5.1",
+    "tinyurl": "^1.1.7",
     "util": "^0.12.5"
   }
 }

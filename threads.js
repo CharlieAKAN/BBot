@@ -1,10 +1,13 @@
 const { ThreadsAPI } = require('threads-api');
+const Discord = require('discord.js');
+const tinyurl = require('tinyurl');
 
 // Create an instance of the ThreadsAPI class
 const threadsAPI = new ThreadsAPI();
 
 // Store the ID of the last thread that was posted for each Thread account
 let lastThreadIds = {};
+let delayTimes = {};
 
 // Function to check for new threads and post them to a Discord channel
 async function checkForNewThreads(threadUsername, channel) {
@@ -22,32 +25,75 @@ async function checkForNewThreads(threadUsername, channel) {
     // If there are any threads and the latest one is not the same as the last one that was posted
     if (threads.length > 0 && threads[0].id !== lastThreadIds[threadUsername]) {
       console.log(`New thread found for ${threadUsername}`);
-
+    
       // Update the last thread ID for the Thread account
       lastThreadIds[threadUsername] = threads[0].id;
+    
+      // Get the original post from the thread
+      const originalPost = threads[0].thread_items[0].post;
+      const title = originalPost.caption ? originalPost.caption.text : ''; 
+      const url = `https://www.threads.net/@${threadUsername}/post/${originalPost.code}/`;
+      const shortUrl = await tinyurl.shorten(url); // Add this line here
+      const profilePicUrl = originalPost.user.profile_pic_url;
+      let imageUrl;
+      if (originalPost.image_versions2 && originalPost.image_versions2.candidates && originalPost.image_versions2.candidates[0]) {
+        imageUrl = originalPost.image_versions2.candidates[0].url;
+      }
 
-      // Send a message to the channel with the new thread
-      channel.send(`New thread posted: ${threads[0].title}\n${threads[0].url}`);
+      // Create an embed
+      const embed = new Discord.EmbedBuilder()
+        .setColor('#C13584')
+        .setAuthor({ name: threadUsername, iconURL: profilePicUrl })
+        .setURL(shortUrl) // Use shortUrl here instead of url
+        .setDescription(`[${title}](${shortUrl})`) // Use shortUrl here instead of url
+        .setFooter({ text: 'Posted On Threads', iconURL: 'https://static.xx.fbcdn.net/rsrc.php/v3/yV/r/_8T3PbCSTRI.png' }); // Update this line
+                  
+      if (imageUrl) {
+        embed.setImage(imageUrl);
+      }
+      
+      if (originalPost.text_post_app_info && originalPost.text_post_app_info.link_preview_attachment) {
+        const linkPreview = originalPost.text_post_app_info.link_preview_attachment;
+        embed.addFields(
+          { name: 'Headline', value: linkPreview.title }
+        );
+        if (linkPreview.image_url) {
+          embed.setImage(linkPreview.image_url);
+        }
+      }
+      
+      // Send the embed to the channel
+      channel.send({ embeds: [embed] });
     } else {
       console.log(`No new threads found for ${threadUsername}`);
     }
   } catch (error) {
-    console.error(`Error getting threads: ${error}`);
+    console.error(`Error getting threads: ${error.message}`);
+    console.error(error.stack);
+    if (error.response && error.response.status === 429) {
+      // If a rate limit error occurred, double the delay time for this thread account
+      delayTimes[threadUsername] = (delayTimes[threadUsername] || 5 * 60 * 1000) * 2;
+    }
   }
 }
+
 
 module.exports = function(bot) {
   bot.on('ready', () => {
     console.log('Bot is ready in threads.js');
-    const threadAccounts = ['iamcharcharr', 'thread-account-2', /* ... */];
-    const channelIds = ['1095471998831960216', 'discord-channel-id-2', /* ... */];
+    const threadAccounts = ['groundnews', 'seaofthievesgame', 'destinythegame', 'playdiablo', 'charlieintel', 'pokemontcg', 'discussingfilm', 'marvel', 'falconbrickstudios',];
+    const channelIds = ['1111704492904296460', '1098639569982865431', '1095471998831960216', '1095471988325236907', '1095471976228860035', '1095086297128898731', '1094787856985247754', '1094787824886227037', '1095045656839737394',];
 
     threadAccounts.forEach((threadAccount, index) => {
       const channel = bot.channels.cache.get(channelIds[index]);
-      setInterval(() => {
+      const checkAndReschedule = () => {
         console.log(`Checking for new threads from ${threadAccount} at ${new Date().toLocaleTimeString()}`);
-        checkForNewThreads(threadAccount, channel);
-      }, 30 * 1000);
+        checkForNewThreads(threadAccount, channel).finally(() => {
+          setTimeout(checkAndReschedule, delayTimes[threadAccount] || 5 * 60 * 1000); // Use the delay time for this thread account, or 5 minutes if not set
+        });
+      };
+      // Start the checks for this account after a delay based on its index
+      setTimeout(checkAndReschedule, index * 60 * 1000); // 1 minute delay per index
     });
   });
 };
