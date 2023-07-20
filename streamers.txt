@@ -1,15 +1,3 @@
-const roleName = 'Join Streamers';
-const channelId = process.env.JOIN_CHANNEL_ID;
-
-async function notifyNewStreamer(oldMember, newMember) {
-  const role = newMember.guild.roles.cache.find(role => role.name === roleName);
-
-  if (!oldMember.roles.cache.has(role.id) && newMember.roles.cache.has(role.id)) {
-    const channel = newMember.guild.channels.cache.get(channelId);
-    await channel.send(`Hello, <@${newMember.id}>! You have been assigned the ${roleName} role. Please join Streamer VC when you are ready!`);
-  }
-}
-
-module.exports = {
-  notifyNewStreamer,
-};
+version https://git-lfs.github.com/spec/v1
+oid sha256:d32038a09fb0a5597b345047e5ad1b380075317be350f59ed6289b9c3d13d786
+size 564

@@ -1,16 +1,3 @@
-  const channelId = 'UCF--xzWaBn_PbjgCwS0wNSQ'; // Replace with the desired YouTube channel ID
-  const targetChannelIds = {
-    live: '728016039761281054', // Replace with the target Discord channel ID for Lives
-    video: '808508638918475808', // Replace with the target Discord channel ID for Videos
-    short: '474982828677791764', // Replace with the target Discord channel ID for Shorts
-  };
-  
-  // Call the function once when the bot starts
-  postLatestYouTubeContent(client, channelId, targetChannelIds);
-
-  // Set up an interval to check for new content every 10 minutes (600,000 milliseconds)
-  setInterval(() => {
-    postLatestYouTubeContent(client, channelId, targetChannelIds);
-  }, 600000);
-
-});
+version https://git-lfs.github.com/spec/v1
+oid sha256:e1f2be5f9487b317eeee268e7fa97d25408fbf999073db6fdc3252520cd7c03c
+size 710
