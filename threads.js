@@ -10,7 +10,7 @@ let lastThreadIds = {};
 let delayTimes = {};
 
 // Function to check for new threads and post them to a Discord channel
-async function checkForNewThreads(threadUsername, channel) {
+async function checkForNewThreads(threadUsername, channel, checkAndReschedule) {
   try {
     console.log(`Checking for new threads from ${threadUsername}...`);
 
@@ -74,9 +74,10 @@ async function checkForNewThreads(threadUsername, channel) {
       // If a rate limit error occurred, double the delay time for this thread account
       delayTimes[threadUsername] = (delayTimes[threadUsername] || 10 * 60 * 1000) * 3;
     }
+    // Schedule the next check here, after the delay time has been increased
+    setTimeout(checkAndReschedule, delayTimes[threadUsername] || 10 * 60 * 1000);
   }
 }
-
 
 module.exports = function(bot) {
   bot.on('ready', () => {
@@ -87,11 +88,7 @@ module.exports = function(bot) {
     threadAccounts.forEach((threadAccount, index) => {
       const channel = bot.channels.cache.get(channelIds[index]);
       const checkAndReschedule = () => {
-        const delayTime = delayTimes[threadAccount] || 10 * 60 * 1000; // Use the delay time for this thread account, or 10 minutes if not set
-        console.log(`Checking for new threads from ${threadAccount} at ${new Date().toLocaleTimeString()}`);
-        checkForNewThreads(threadAccount, channel).finally(() => {
-          setTimeout(checkAndReschedule, delayTime);
-        });
+        checkForNewThreads(threadAccount, channel, checkAndReschedule);
       };
       // Start the checks for this account after a delay based on its index
       setTimeout(checkAndReschedule, index * 60 * 1000); // 1 minute delay per index
