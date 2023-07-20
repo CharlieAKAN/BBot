@@ -87,9 +87,10 @@ module.exports = function(bot) {
     threadAccounts.forEach((threadAccount, index) => {
       const channel = bot.channels.cache.get(channelIds[index]);
       const checkAndReschedule = () => {
+        const delayTime = delayTimes[threadAccount] || 10 * 60 * 1000; // Use the delay time for this thread account, or 10 minutes if not set
         console.log(`Checking for new threads from ${threadAccount} at ${new Date().toLocaleTimeString()}`);
         checkForNewThreads(threadAccount, channel).finally(() => {
-          setTimeout(checkAndReschedule, delayTimes[threadAccount] || 10 * 60 * 1000); // Use the delay time for this thread account, or 10 minutes if not set
+          setTimeout(checkAndReschedule, delayTime);
         });
       };
       // Start the checks for this account after a delay based on its index
@@ -97,3 +98,4 @@ module.exports = function(bot) {
     });
   });
 };
+
