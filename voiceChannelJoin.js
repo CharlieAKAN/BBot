@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 
 let usersInChannel = new Set();
-let isSending = false;
 let sentMessage = null;
+let timeoutId = null;
 
 module.exports = async (oldState, newState) => {
   const allowedRoles = ['STOA Streamers', 'STOA Manager'];
@@ -16,10 +16,8 @@ module.exports = async (oldState, newState) => {
   if (newState.channel?.name === voiceChannelName && member.roles.cache.some(memberRole => allowedRoles.includes(memberRole.name))) {
     usersInChannel.add(member.id);
 
-    if (usersInChannel.size === 1) {
-      isSending = true;
-
-      setTimeout(async () => {
+    if (usersInChannel.size === 1 && timeoutId === null) {
+      timeoutId = setTimeout(async () => {
         const embed = new EmbedBuilder()
           .setColor('#0099ff')
           .setTitle('Join Streamer VC')
@@ -47,8 +45,8 @@ module.exports = async (oldState, newState) => {
           }
         });
 
-        isSending = false;
-      }, 1800000 ); 
+        timeoutId = null;
+      }, 1800000);
     }
   }
 
@@ -56,7 +54,10 @@ module.exports = async (oldState, newState) => {
     usersInChannel.delete(member.id);
 
     if (usersInChannel.size === 0) {
-      isSending = false;
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
 
       if (sentMessage) {
         sentMessage.delete().catch(console.error);

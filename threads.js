@@ -82,14 +82,14 @@ module.exports = function(bot) {
   bot.on('ready', () => {
     console.log('Bot is ready in threads.js');
     const threadAccounts = ['groundnews', 'seaofthievesgame', 'destinythegame', 'playdiablo', 'charlieintel', 'pokemontcg', 'discussingfilm', 'marvel', 'falconbrickstudios',];
-    const channelIds = ['1111704492904296460', '1098639569982865431', '1095471998831960216', '1095471988325236907', '1095471976228860035', '1095086297128898731', '1094787856985247754', '1094787824886227037', '1095045656839737394',];
+    const channelIds = ['1088969247419531386', '603334971066810381', '1118749148951355392', '1118749443030777907', '1121847826209570948', '828765365470363689', '1088662067566878841', '831224568903237642', '830960829980606485',];
 
     threadAccounts.forEach((threadAccount, index) => {
       const channel = bot.channels.cache.get(channelIds[index]);
       const checkAndReschedule = () => {
         console.log(`Checking for new threads from ${threadAccount} at ${new Date().toLocaleTimeString()}`);
         checkForNewThreads(threadAccount, channel).finally(() => {
-          setTimeout(checkAndReschedule, delayTimes[threadAccount] || 5 * 60 * 1000); // Use the delay time for this thread account, or 5 minutes if not set
+          setTimeout(checkAndReschedule, delayTimes[threadUsername] || 5 * 60 * 1000); // Use the delay time for this thread account, or 5 minutes if not set
         });
       };
       // Start the checks for this account after a delay based on its index
