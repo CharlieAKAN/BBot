@@ -89,7 +89,8 @@ async function checkForNewThreads(threadUsername, channel, checkAndReschedule) {
     }
     delayTimes[threadUsername] = 10 * 60 * 1000;
     saveState();
-  } catch (error) {
+    setTimeout(checkAndReschedule, delayTimes[threadUsername] || 10 * 60 * 1000); // Add this line
+} catch (error) {
     console.error(`Error getting threads: ${error.message}`);
     console.error(error.stack);
     if (error.response && error.response.status === 429) {
