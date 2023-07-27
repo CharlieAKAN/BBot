@@ -1,6 +1,7 @@
 const { ThreadsAPI } = require('threads-api');
 const Discord = require('discord.js');
 const tinyurl = require('tinyurl');
+const fs = require('fs');
 
 // Create an instance of the ThreadsAPI class
 const threadsAPI = new ThreadsAPI();
@@ -8,6 +9,25 @@ const threadsAPI = new ThreadsAPI();
 // Store the ID of the last thread that was posted for each Thread account
 let lastThreadIds = {};
 let delayTimes = {};
+
+// Initialize from saved state
+try {
+  const savedState = JSON.parse(fs.readFileSync('savedState.json', 'utf-8'));
+  lastThreadIds = savedState.lastThreadIds;
+  delayTimes = savedState.delayTimes;
+} catch (error) {
+  console.error(`Error loading saved state: ${error.message}`);
+}
+
+// Function to save state
+function saveState() {
+  const savedState = { lastThreadIds, delayTimes };
+  try {
+    fs.writeFileSync('savedState.json', JSON.stringify(savedState));
+  } catch (error) {
+    console.error(`Error saving state: ${error.message}`);
+  }
+}
 
 // Function to check for new threads and post them to a Discord channel
 async function checkForNewThreads(threadUsername, channel, checkAndReschedule) {
@@ -67,12 +87,15 @@ async function checkForNewThreads(threadUsername, channel, checkAndReschedule) {
     } else {
       console.log(`No new threads found for ${threadUsername}`);
     }
+    delayTimes[threadUsername] = 10 * 60 * 1000;
+    saveState();
   } catch (error) {
     console.error(`Error getting threads: ${error.message}`);
     console.error(error.stack);
     if (error.response && error.response.status === 429) {
       // If a rate limit error occurred, double the delay time for this thread account
-      delayTimes[threadUsername] = (delayTimes[threadUsername] || 10 * 60 * 1000) * 3;
+      delayTimes[threadUsername] = (delayTimes[threadUsername] || 10 * 60 * 1000) * 2;
+      saveState();
     }
     // Schedule the next check here, after the delay time has been increased
     setTimeout(checkAndReschedule, delayTimes[threadUsername] || 10 * 60 * 1000);
