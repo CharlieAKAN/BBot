@@ -12,7 +12,6 @@ const util = require('util');
 const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
-const VoiceHandler = require('./voiceHandler');
 
 
 let imageDescriptionMap = new Map();
@@ -209,11 +208,6 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', async (message) => {
-  if (message.content === '!joinvc') {
-    await voiceHandler.handleJoinCommand(message);
-  } else if (message.content === '!leavevc') {
-    voiceHandler.handleLeaveCommand(message);
-  }
   const videoLinkMoved = await handleVideoLinks(message);
   if (!filterMessages(message, client, blooActivated, imageDescriptionMap) || videoLinkMoved) return;
   
@@ -356,7 +350,6 @@ client.on('messageCreate', message => {
     const args = message.content.slice('!whosplaying'.length).trim().split(/ +/g);
     crewmates.execute(message, args, client);
   }
-
 });
 
 client.login(process.env.TOKEN);
