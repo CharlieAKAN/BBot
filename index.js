@@ -208,11 +208,7 @@ client.on('ready', () => {
 
 
 client.on('messageCreate', async (message) => {
-  // Add this block at the beginning of your messageCreate event listener
-  if (message.content.startsWith('!joinvc')) {
-    voiceHandler.execute(message);
-    return; // Return after executing the command to prevent the rest of the code from running
-  }  const videoLinkMoved = await handleVideoLinks(message);
+  const videoLinkMoved = await handleVideoLinks(message);
   if (!filterMessages(message, client, blooActivated, imageDescriptionMap) || videoLinkMoved) return;
   
   // Check if the keyword "bloo" is in the message and set blooActivated to true
