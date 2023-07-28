@@ -12,7 +12,6 @@ const util = require('util');
 const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
-const voiceHandler = require('./voiceHandler');
 
 
 let imageDescriptionMap = new Map();
