@@ -17,6 +17,7 @@
     "@google-cloud/storage": "^6.11.0",
     "@google-cloud/video-intelligence": "^4.2.3",
     "@google-cloud/vision": "^3.1.4",
+    "audio-resampler": "^1.0.1",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "cheerio-httpcli": "^0.8.3",
@@ -33,18 +34,23 @@
     "fs": "^0.0.1-security",
     "googleapis": "^116.0.0",
     "json-stringify-safe": "^5.0.1",
+    "libsamplerate.js": "^1.0.0",
     "luxon": "^3.3.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "node-cron": "^3.0.2",
-    "node-fetch": "^3.3.1",
+    "node-fetch": "^2.6.6",
     "node-schedule": "^2.1.1",
     "openai": "^3.3.0",
+    "opusscript": "^0.0.8",
     "probe-image-size": "^7.2.3",
     "rss-parser": "^3.13.0",
+    "rtp-ogg-opus": "^1.0.13",
+    "sox-stream": "^2.0.6",
     "streamifier": "^0.1.1",
     "threads-api": "^1.5.1",
     "tinyurl": "^1.1.7",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "ws": "^8.13.0"
   }
 }

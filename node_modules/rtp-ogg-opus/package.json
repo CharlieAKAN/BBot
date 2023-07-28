@@ -1,0 +1,87 @@
+{
+    "name": "rtp-ogg-opus",
+    "version": "1.0.13",
+    "description": "RTP Ogg/Opus Tools for NodeJS",
+    "main": "dist/index.js",
+    "files": [
+        "dist/**/*",
+        "deps/**/*",
+        "src/**/*",
+        "binding.gyp"
+    ],
+    "author": "Dioris Moreno <dmoreno@libersys.io>",
+    "license": "MIT",
+    "keywords": [
+        "rtp-streaming",
+        "ogg-opus",
+        "ogg",
+        "opus",
+        "native",
+        "module",
+        "bindings",
+        "binary",
+        "napi"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/libersys/rtp-ogg-opus.git"
+    },
+    "bugs": {
+        "url": "https://github.com/libersys/rtp-ogg-opus/issues"
+    },
+    "homepage": "https://github.com/libersys/rtp-ogg-opus#readme",
+    "dependencies": {
+        "@mapbox/node-pre-gyp": "^1.0.5",
+        "bindings": "^1.5.0",
+        "debug": "^4.1.1",
+        "node-addon-api": "^4.0.0"
+    },
+    "devDependencies": {
+        "@types/bindings": "^1.5.0",
+        "@types/debug": "^4.1.5",
+        "@types/jest": "^27.4.1",
+        "@types/lodash": "^4.14.170",
+        "@types/node": "^17.0.21",
+        "@types/uuid": "^8.3.4",
+        "@typescript-eslint/eslint-plugin": "^5.12.1",
+        "@typescript-eslint/parser": "^5.12.1",
+        "eslint": "^8.10.0",
+        "eslint-config-prettier": "^8.4.0",
+        "eslint-config-typescript": "^3.0.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "jest": "^27.0.5",
+        "lodash": "^4.17.21",
+        "node-gyp": "^8.1.0",
+        "prettier": "^2.3.1",
+        "ts-jest": "^27.1.3",
+        "ts-node": "^10.5.0",
+        "ts-node-dev": "^1.1.8",
+        "typescript": "^4.3.4"
+    },
+    "scripts": {
+        "test": "jest --coverage --config jestconfig.json",
+        "format": "prettier --write \"lib/**/*.ts\"",
+        "install": "node-pre-gyp install --fallback-to-build",
+        "build": "node-pre-gyp install build package && tsc",
+        "package": "node-pre-gyp package",
+        "rebuild": "node-pre-gyp rebuild",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "prepare": "yarn run build",
+        "prepublishOnly": "yarn test && yarn run lint",
+        "preversion": "yarn run lint",
+        "version": "yarn run format && git add .",
+        "postversion": "git push --tags"
+    },
+    "binary": {
+        "module_name": "rtpoggopus",
+        "module_path": "./prebuild/{node_abi}-napi-v{napi_build_version}-{platform}-{arch}/",
+        "remote_path": "v{version}",
+        "package_name": "{module_name}-v{version}-{node_abi}-napi-v{napi_build_version}-{platform}-{arch}.tar.gz",
+        "host": "https://github.com/libersys/rtp-ogg-opus/releases/download/",
+        "napi_versions": [
+            3
+        ]
+    },
+    "gypfile": true
+}
