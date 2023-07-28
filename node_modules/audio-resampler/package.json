@@ -1,0 +1,39 @@
+{
+  "name": "audio-resampler",
+  "version": "1.0.1",
+  "description": "Simple WebAudio based resampling library",
+  "main": "lib/resampler.js",
+  "files": ["lib/resampler.js"],
+  "scripts": {
+    "build": "jshint index.js lib/resampler.js && browserify index.js > bundle.js",
+    "watch:index": "watch 'npm run build' . --wait=5",
+    "build:watch": "parallelshell 'npm run watch:index' 'http-server'",
+    "start": "npm run build && http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/notthetup/resampler.git"
+  },
+  "keywords": [
+    "webaudio",
+    "resample",
+    "audio"
+  ],
+  "author": "Chinmay Pendharkar <notthetup@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/notthetup/resampler/issues"
+  },
+  "homepage": "https://github.com/notthetup/resampler",
+  "dependencies": {
+    "wav-encoder": "^0.2.2",
+    "webaudioloader": "^1.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "drag-drop": "^2.0.0",
+    "jshint": "^2.6.3",
+    "parallelshell": "^1.1.1",
+    "watch": "^0.14.0"
+  }
+}

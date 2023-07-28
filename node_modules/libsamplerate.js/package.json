@@ -1,0 +1,41 @@
+{
+  "name": "libsamplerate.js",
+  "version": "1.0.0",
+  "description": "libsamplerate compiled to JavaScript using emscripten",
+  "homepage": "https://github.com/johni0702/libsamplerate.js",
+  "author": "Jonas Herzig <me@johni0702.de>",
+  "keywords": [
+    "libsamplerate",
+    "SRC",
+    "PCM",
+    "Sample",
+    "Rate",
+    "Audio"
+  ],
+  "license": "MIT",
+  "main": "lib/resampler.js",
+  "files": [
+    "lib/resampler.js",
+    "build/libsamplerate.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/johni0702/libsamplerate.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johni0702/libsamplerate.js/issues",
+    "email": "me@johni0702.de"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3",
+    "mocha-standard": "^1.0.0",
+    "standard": "^8.6.0"
+  },
+  "dependencies": {
+    "extend": "^3.0.0"
+  }
+}
