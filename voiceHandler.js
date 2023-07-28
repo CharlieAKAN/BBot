@@ -24,7 +24,7 @@ class VoiceHandler {
             channelId: voiceChannel.id,
             guildId: voiceChannel.guild.id,
             adapterCreator: voiceChannel.guild.voiceAdapterCreator,
-            selfDeaf: false, // Add this line
+            selfDeaf: false,
         });
         this.voiceConnections.set(message.guild.id, connection);
     
@@ -37,14 +37,21 @@ class VoiceHandler {
             // You'll probably want to handle the disconnection event here and clean up the map entry.
         });
     
+        connection.receiver.speaking.on('start', (userId) => {
+            this.handleUserSpeaking(userId, connection);
+        });
     }
 
-    async handleUserSpeaking(user, connection) {
-        const audioStream = connection.receiver.createStream(user, { mode: 'pcm' });
-        const audioBuffer = await this.getAudioBufferFromStream(audioStream);
-        const text = await this.convertSpeechToText(audioBuffer);
-        const response = await this.generateResponse(text);
-        this.speakResponse(response, connection);
+    async handleUserSpeaking(userId, connection) {
+        const subscription = connection.receiver.subscribe(userId);
+
+        subscription.on('packet', (packet) => {
+            // Handle the audio packet here...
+            // You need to implement this part based on your specific requirements.
+        });
+
+        // Rest of your code...
+        // Note: You need to adjust this part based on how you handle the audio packets.
     }
 
     async getAudioBufferFromStream(stream) {
