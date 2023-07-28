@@ -12,6 +12,7 @@ const util = require('util');
 const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
+const voiceHandler = require('./voiceHandler');
 
 
 let imageDescriptionMap = new Map();
@@ -162,8 +163,6 @@ const client = new Client({
   ],
 });
 
-const voiceHandler = new VoiceHandler(client, '5VOZOZQCRGOKB3PCZVTYWRTFPTWWJJJR', 'c678c4e41bebfdc087e479fe87e3e279'); // Instantiate VoiceHandler
-
 let blooActivated = false;
 let messageCount = 0;
 let timeout;
@@ -207,8 +206,13 @@ client.on('ready', () => {
   console.log('The bot is online!');
 });
 
+
 client.on('messageCreate', async (message) => {
-  const videoLinkMoved = await handleVideoLinks(message);
+  // Add this block at the beginning of your messageCreate event listener
+  if (message.content.startsWith('!joinvc')) {
+    voiceHandler.execute(message);
+    return; // Return after executing the command to prevent the rest of the code from running
+  }  const videoLinkMoved = await handleVideoLinks(message);
   if (!filterMessages(message, client, blooActivated, imageDescriptionMap) || videoLinkMoved) return;
   
   // Check if the keyword "bloo" is in the message and set blooActivated to true
