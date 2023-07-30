@@ -9,8 +9,10 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 const prism = require('prism-media');
 const ffmpeg = require('fluent-ffmpeg');
+const speech = require('@google-cloud/speech');
 
 
+const client = new speech.SpeechClient();
 
 
 let connection = null;
@@ -34,7 +36,44 @@ async function joinVoiceChannelHandler(userVoiceChannel) {
 
   player = createAudioPlayer();
   connection.subscribe(player);
+
+  return { connection, channel: userVoiceChannel }; // Return both the connection and channel objects
 }
+
+async function listenAndLeaveOnCommand(connection, user) {
+  const receiver = connection.receiver;
+
+  const opusStream = receiver.subscribe(user.id, {
+    end: {
+      behavior: EndBehaviorType.AfterSilence,
+      duration: 1000,
+    },
+  });
+
+  opusStream.on('data', (chunk) => {
+    // Concatenate the chunks of audio data
+    audioBuffer = Buffer.concat([audioBuffer, chunk]);
+  });
+
+  opusStream.on('end', async () => {
+    console.log('User stopped speaking'); // Log when a user stops speaking
+
+    const transcription = await transcribeAudio(audioBuffer);
+    console.log('Transcription:', transcription); // Log the transcription result
+
+    if (transcription.includes('leave')) {
+      connection.disconnect();
+    }
+  });
+}
+
+
+
+
+
+
+
+
 
 async function generateFunnyThingsAndPlay() {
   const funnyText = await generateFunnyThings();
@@ -45,7 +84,7 @@ async function generateFunnyThingsAndPlay() {
 }
 
 async function generateFunnyThings() {
-    const maxTokens = 100;
+    const maxTokens = 20;
   
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo', 
@@ -100,7 +139,30 @@ async function textToSpeech(text) {
       .run();
   }
 
-module.exports = {
+
+  async function transcribeAudio(audioBuffer) {
+    const request = {
+      audio: {
+        content: audioBuffer.toString('base64'),
+      },
+      config: {
+        encoding: 'LINEAR16',
+        sampleRateHertz: 16000,
+        languageCode: 'en-US',
+      },
+    };
+  
+    const [response] = await client.recognize(request);
+    const transcription = response.results
+      .map(result => result.alternatives[0].transcript)
+      .join('\n');
+    return transcription;
+  }
+  
+  
+
+  module.exports = {
     joinVoiceChannelHandler,
     generateFunnyThingsAndPlay,
+    listenAndLeaveOnCommand,
   };
