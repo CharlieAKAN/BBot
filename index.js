@@ -12,8 +12,7 @@ const util = require('util');
 const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
-
-
+const voiceHandler = require('./voiceHandler');
 
 let imageDescriptionMap = new Map();
 
@@ -192,8 +191,8 @@ const setRandomStatus = () => {
   client.user.setActivity(status[random]);
 };
 
-const startCheckingForNewThreads = require('./threads.js');
-startCheckingForNewThreads(client);
+//const startCheckingForNewThreads = require('./threads.js');
+//startCheckingForNewThreads(client);
 
 
 client.on('ready', () => {
@@ -208,6 +207,15 @@ client.on('ready', () => {
 
 
 client.on('messageCreate', async (message) => {
+
+  if (message.content.startsWith('!joinvc')) {
+    if (message.member.voice.channel) {
+      await voiceHandler.joinVoiceChannelHandler(message.member.voice.channel);
+      await voiceHandler.generateFunnyThingsAndPlay();
+    } else {
+      message.reply('You need to join a voice channel first!');
+    }
+  }
   const videoLinkMoved = await handleVideoLinks(message);
   if (!filterMessages(message, client, blooActivated, imageDescriptionMap) || videoLinkMoved) return;
   
