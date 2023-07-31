@@ -10,6 +10,7 @@ const openai = new OpenAIApi(configuration);
 const prism = require('prism-media');
 const ffmpeg = require('fluent-ffmpeg');
 const speech = require('@google-cloud/speech');
+const { processAudio } = require('./audio-processing-setup');
 
 
 const client = new speech.SpeechClient();
@@ -159,10 +160,28 @@ async function textToSpeech(text) {
     return transcription;
   }
   
+  async function handleVoiceCommands(connection, ctx) {
+    // Get the audio stream from the voice connection
+    const audioStream = connection.receiver.createStream(ctx.member.user, { mode: 'pcm' });
+  
+    // Process the audio stream with Dialogflow
+    const text = await processAudio(audioStream);
+  
+    // Generate a response with ChatGPT
+    const response = await generateFunnyThings(text);
+  
+    // Convert the response into voice with ElevenLabs
+    const voiceResponse = await textToSpeech(response);
+  
+    // Play the voice response in the voice channel
+    playAudio(voiceResponse);
+  }
   
 
   module.exports = {
     joinVoiceChannelHandler,
     generateFunnyThingsAndPlay,
     listenAndLeaveOnCommand,
+    handleVoiceCommands, // Export the handleVoiceCommands function
   };
+  

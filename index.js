@@ -12,7 +12,7 @@ const util = require('util');
 const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
-const voiceHandler = require('./voiceHandler');
+const { joinVoiceChannelHandler, handleVoiceCommands } = require('./voiceHandler'); // Import the handleVoiceCommands function
 
 let imageDescriptionMap = new Map();
 
@@ -208,10 +208,10 @@ client.on('ready', () => {
 
 client.on('messageCreate', async (message) => {
 
-  if (message.content.startsWith('!joinvc')) {
+  if (message.content === '!joinvc') {
     if (message.member.voice.channel) {
-      await voiceHandler.joinVoiceChannelHandler(message.member.voice.channel);
-      await voiceHandler.generateFunnyThingsAndPlay();
+      const connection = await joinVoiceChannelHandler(message.member.voice.channel);
+      handleVoiceCommands(connection, message); // Call the handleVoiceCommands function
     } else {
       message.reply('You need to join a voice channel first!');
     }
