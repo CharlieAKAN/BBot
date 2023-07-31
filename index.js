@@ -211,7 +211,7 @@ client.on('messageCreate', async (message) => {
   if (message.content.startsWith('!joinvc')) {
     if (message.member.voice.channel) {
       await voiceHandler.joinVoiceChannelHandler(message.member.voice.channel);
-      await voiceHandler.generateFunnyThingsAndPlay();
+          // await voiceHandler.generateFunnyThingsAndPlay();
     } else {
       message.reply('You need to join a voice channel first!');
     }
@@ -349,8 +349,12 @@ client.on('messageCreate', async (message) => {
   
 });
 
-client.on('voiceStateUpdate', (oldState, newState) => {
+client.on('voiceStateUpdate', async (oldState, newState) => {
   voiceStateUpdate(oldState, newState);
+
+  if (newState.member.id === client.user.id && !oldState.channelId && newState.channelId) {
+    console.log('Bloo joined a voice channel');
+  }
 });
 
 client.on('messageCreate', message => {

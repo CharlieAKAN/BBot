@@ -57,7 +57,9 @@
     "opusscript": "^0.0.8",
     "pcm": "^1.0.3",
     "pcm-convert": "^1.6.5",
+    "pcm-format": "^1.1.2",
     "pcm-resampler": "^1.2.4",
+    "prism-media": "^1.3.5",
     "probe-image-size": "^7.2.3",
     "rss-parser": "^3.13.0",
     "rtp-ogg-opus": "^1.0.13",
@@ -70,5 +72,8 @@
     "wav-decoder": "^1.3.0",
     "wave-resampler": "^1.0.0",
     "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "vosk": "^0.3.39"
   }
 }
