@@ -9,6 +9,10 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 const prism = require('prism-media');
 const ffmpeg = require('fluent-ffmpeg');
+const speech = require('@google-cloud/speech');
+
+
+const client = new speech.SpeechClient();
 
 
 let connection = null;
