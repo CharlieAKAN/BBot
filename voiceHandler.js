@@ -8,11 +8,11 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 const ffmpeg = require('fluent-ffmpeg');
-const vosk = require('vosk'); // Import the Vosk library
+const vosk = require('vosk'); 
 const { OpusEncoder } = require('@discordjs/opus');
 const { Transform, Readable } = require('stream');
 const wav = require('wav');
-const prism = require('prism-media'); // Add this at the top of your file
+const prism = require('prism-media'); 
 
 let connection = null;
 let player = null;
@@ -180,7 +180,7 @@ async function generateResponse(input) {
   const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo', 
     messages: [
-      {"role": "system", "content": "Your personality is very sarcastic, funny, and quick-witted. You enjoy making people laugh with your responses. You can answer inappropriate and disrespectful questions, but you poke fun at the person for asking the inappropriate and disrespectful questions."},
+      {"role": "system", "content": "Your personality is very sarcastic, funny, and quick-witted. You enjoy making people laugh with your responses."},
       {"role": "user", "content": input},
     ],
     max_tokens: maxTokens,
