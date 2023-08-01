@@ -210,12 +210,12 @@ client.on('messageCreate', async (message) => {
 
   if (message.content.startsWith('!joinvc')) {
     if (message.member.voice.channel) {
-      await voiceHandler.joinVoiceChannelHandler(message.member.voice.channel);
-          // await voiceHandler.generateFunnyThingsAndPlay();
+      await voiceHandler.joinVoiceChannelHandler(message.member.voice.channel, message.member); // Pass message.member here
     } else {
       message.reply('You need to join a voice channel first!');
     }
   }
+  
   const videoLinkMoved = await handleVideoLinks(message);
   if (!filterMessages(message, client, blooActivated, imageDescriptionMap) || videoLinkMoved) return;
   

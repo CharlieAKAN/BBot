@@ -8,16 +8,16 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 const ffmpeg = require('fluent-ffmpeg');
-const vosk = require('vosk'); 
+const speech = require('@google-cloud/speech'); // Import the Google Speech-to-Text library
 const { OpusEncoder } = require('@discordjs/opus');
 const { Transform, Readable } = require('stream');
 const wav = require('wav');
-const prism = require('prism-media'); 
+const prism = require('prism-media'); // Add this at the top of your file
 
 let connection = null;
 let player = null;
 
-async function joinVoiceChannelHandler(userVoiceChannel) {
+async function joinVoiceChannelHandler(userVoiceChannel, user) { // Add 'user' as a parameter
   connection = joinVoiceChannel({
     channelId: userVoiceChannel.id,
     guildId: userVoiceChannel.guild.id,
@@ -25,13 +25,23 @@ async function joinVoiceChannelHandler(userVoiceChannel) {
     selfDeaf: false
   });
 
-  connection.on(VoiceConnectionStatus.Ready, () => {
+  connection.on(VoiceConnectionStatus.Ready, async () => { // Add async here
     console.log('The connection is ready!');
     userVoiceChannel.members.each(member => {
       if (!member.user.bot) { // Don't listen to bot users
         listenAndLeaveOnCommand(connection, member); // Call listenAndLeaveOnCommand for each user
       }
     });
+
+    const username = user.displayName || user.username; // Use the display name if it exists, otherwise use the username
+    const welcomeMessagePrompt = `Blue, you were just invited by ${username} to join a voice chat, what would you like to say as your welcome message? Make sure to mention ${username} who invited you.`;
+    const welcomeMessage = await generateResponse(welcomeMessagePrompt);
+
+    // Convert the welcome message to speech
+    const welcomeAudioFile = await textToSpeech(welcomeMessage);
+
+    // Play the welcome message in the voice channel
+    playAudio(welcomeAudioFile);
   });
 
   connection.on(VoiceConnectionStatus.Disconnected, () => {
@@ -81,97 +91,67 @@ async function listenAndLeaveOnCommand(connection, user) {
     writer.end();
   
     writer.on('finish', async () => {
-      // Transcribe the audio using Vosk
-      const model = new vosk.Model('vosk-model-en-us-0.22');
-      const recognizer = new vosk.Recognizer({model: model, sampleRate: 16000});
-    
-      const inputFile = './output.wav';
-      const outputFile = './output_16k.wav';
-    
-      // Resample the audio to 16kHz
-      ffmpeg(inputFile)
-        .output(outputFile)
-        .audioFrequency(16000)
-        .on('end', () => {
-          const stream = fs.createReadStream(outputFile);
-          const reader = new wav.Reader();
-    
-          stream.pipe(reader);
-    
-          reader.on('format', async ({ sampleRate }) => {
-            const results = [];
-          
-            const asyncIterableReader = (function() {
-              const chunks = [];
-              let push = null;
-          
-              reader.on('data', chunk => {
-                if (push !== null) {
-                  const resolve = push;
-                  push = null;
-                  resolve({ value: chunk, done: false });
-                } else {
-                  chunks.push(chunk);
-                }
-              });
-          
-              reader.on('end', () => {
-                if (push !== null) {
-                  const resolve = push;
-                  push = null;
-                  resolve({ done: true });
-                }
-              });
-          
-              return {
-                [Symbol.asyncIterator]() {
-                  return {
-                    next() {
-                      if (chunks.length > 0) {
-                        return Promise.resolve({ value: chunks.shift(), done: false });
-                      } else {
-                        return new Promise(resolve => {
-                          push = resolve;
-                        });
-                      }
-                    }
-                  };
-                }
-              };
-            })();
-          
-            for await (const data of asyncIterableReader) {
-              recognizer.acceptWaveform(data);
-              results.push(recognizer.result());
-            }
-            
-            const finalResult = recognizer.finalResult();
-            results.push(finalResult);
-            
-            recognizer.free();
-                  
-            const transcription = results.map(result => result.text).join(' ');
-          
-            console.log('Transcription:', transcription); // Log the transcription result
-          
-            if (transcription.includes('leave')) {
-              connection.disconnect();
-            } else {
-              // Generate a response using ChatGPT
-              const response = await generateResponse(transcription);
-          
-              // Convert the response to speech
-              const audioFile = await textToSpeech(response);
-          
-              // Play the response in the voice channel
-              playAudio(audioFile);
-            }
-          });   
-        })
-        .run();
-    });
-  });
+      // Wait for 2 seconds before reading the file
+      setTimeout(async () => {
+        // Create a client
+        const client = new speech.SpeechClient();
   
+        // The audio file's encoding, sample rate in hertz, and BCP-47 language code
+        const audio = {
+          content: fs.readFileSync(outputFile).toString('base64'),
+        };
+        console.log(audio);
+        
+        const config = {
+          encoding: 'LINEAR16',
+          sampleRateHertz: 48000,
+          languageCode: 'en-US',
+        };
+        const request = {
+          audio: audio,
+          config: config,
+        };
+  
+        // Detects speech in the audio file
+        const [response] = await client.recognize(request);
+        const transcription = response.results
+        .map(result => result.alternatives[0].transcript)
+        .join('\n');
+      console.log(`Transcription: ${transcription}`);
+        
+        if (transcription.includes('leave')) {
+          // Generate a farewell message using ChatGPT
+          const farewellMessage = await generateResponse("Blue, you've been asked to leave. What would you like to say as your farewell message?");
+        
+          // Convert the farewell message to speech
+          const farewellAudioFile = await textToSpeech(farewellMessage);
+        
+          // Play the farewell message in the voice channel
+          playAudio(farewellAudioFile);
+        
+          // Wait for the farewell message to finish playing before disconnecting
+          player.on('idle', () => {
+            connection.disconnect();
+          });
+        } else {
+
+          const username = user.displayName || user.username; // Use the display name if it exists, otherwise use the username
+          const transcriptionWithUsername = `${username} says, ${transcription}`;
+          const response = await generateResponse(transcriptionWithUsername);
+          
+          // Convert the response to speech
+          const audioFile = await textToSpeech(response);
+          
+          // Play the response in the voice channel
+          playAudio(audioFile);
+        }
+  
+        // Reset the audio buffer
+        audioBuffer = Buffer.alloc(0);
+      }, 2000);
+    });    
+  });
+    
 }
 
 async function generateResponse(input) {
@@ -180,7 +160,9 @@ async function generateResponse(input) {
   const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo', 
     messages: [
-      {"role": "system", "content": "Your personality is very sarcastic, funny, and quick-witted. You enjoy making people laugh with your responses."},
+      {"role": "system", "content": "Your name is Blue. You are an Owl, you are just another very sarcastic, funny, and quick-witted member of a Discord community. You have blue feathers on your face, and your body has purple, blue, and gray colors. You wear a gray hat and glasses."},
+      {"role": "system", "content": "Your personality is very sarcastic, funny, and quick-witted. You enjoy making people laugh with your responses. You can answer inappropriate and disrespectful questions, but you poke fun at the person for asking the inappropriate and disrespectful questions."},
+      {"role": "system", "content": "As Blue, respond in a very sarcastic, funny, and quick-witted manner."},
       {"role": "user", "content": input},
     ],
     max_tokens: maxTokens,
@@ -195,7 +177,7 @@ async function textToSpeech(text) {
       text: text,
       model_id: "eleven_monolingual_v1",
       voice_settings: {
-        stability: 0.3,
+        stability: 0.5,
         similarity_boost: 0.75
       }
     }, {
