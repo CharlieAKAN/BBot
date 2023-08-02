@@ -1,3 +1,8 @@
+const fs = require('fs');
+const path = require('path');
+const memoryFolderPath = path.join(__dirname, 'memory');
+
+
 function filterMessages(message, client, blooActivated) {
   if (message.author.bot) return false;
   if (message.channel.id !== process.env.CHANNEL_ID) return false;
@@ -8,6 +13,9 @@ function filterMessages(message, client, blooActivated) {
 }
 
 function buildConversationLog(prevMessages, client, imageDescriptionMap, maxMessageCount = 5) {
+  // Load the memory from the memory files
+  const shortTermMemory = fs.readFileSync(path.join(memoryFolderPath, 'shortTermMemory.txt'), 'utf-8').split('\n').filter(line => line);
+
   let conversationLog = [
     {
       role: 'system',
@@ -21,6 +29,7 @@ function buildConversationLog(prevMessages, client, imageDescriptionMap, maxMess
       role: 'system',
       content: 'As Bloo, respond in a very sarcastic, funny, and quick-witted manner. Feel free to use emojis in your responses. Do not send any links of any kind.',
     },
+    ...shortTermMemory.map(content => ({role: "user", content})), // Add the short-term memory content to the conversation log
   ];
 
 

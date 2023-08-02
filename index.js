@@ -13,8 +13,10 @@ const fs = require('fs');
 const crewmates = require('./crewmates');
 const voiceStateUpdate = require('./voiceChannelJoin');
 const voiceHandler = require('./voiceHandler');
+const path = require('path');
 
 let imageDescriptionMap = new Map();
+let connection = null;
 
 async function generateGifQuery(prompt) {
   const response = await openai.createChatCompletion({
@@ -205,17 +207,27 @@ client.on('ready', () => {
   console.log('The bot is online!');
 });
 
+let listeningUsers = new Set(); // Define listeningUsers here
 
 client.on('messageCreate', async (message) => {
 
+  if (connection && connection.state && connection.state.status === VoiceConnectionStatus.Ready) {
+    console.log('Bloo is currently in a voice channel and will not respond to text messages.');
+    return;
+  }
+
   if (message.content.startsWith('!joinvc')) {
     if (message.member.voice.channel) {
-      await voiceHandler.joinVoiceChannelHandler(message.member.voice.channel, message.member); // Pass message.member here
+      if (connection && connection.state.status === VoiceConnectionStatus.Ready) {
+        message.reply('I\'m already connected to a voice channel!');
+      } else {
+        connection = await voiceHandler.joinVoiceChannelHandler(message.member.voice.channel, message.member); // Pass message.member here
+      }
     } else {
       message.reply('You need to join a voice channel first!');
     }
   }
-  
+    
   const videoLinkMoved = await handleVideoLinks(message);
   if (!filterMessages(message, client, blooActivated, imageDescriptionMap) || videoLinkMoved) return;
   
@@ -223,6 +235,11 @@ client.on('messageCreate', async (message) => {
   if (message.content.toLowerCase().includes('bloo')) {
     blooActivated = true;
     messageCount = 0;
+  }
+  
+  // Add the message to shortTermMemory.txt if Bloo is activated and messageCount is less than 5
+  if (blooActivated && messageCount < 5) {
+    fs.appendFileSync(path.join(__dirname, 'memory', 'shortTermMemory.txt'), `${message.author.username}: ${message.content}\n`);
   }
 
   // Analyze images even when Bloo is not activated
@@ -313,6 +330,9 @@ client.on('messageCreate', async (message) => {
         if (messageCount >= maxMessageCount) {
           blooActivated = false;
           customRole = 'Bloo is now Flying Away. The user can bring back Bloo by using the keyword.';
+    
+          // Clear shortTermMemory.txt when Bloo is deactivated
+          fs.writeFileSync(path.join(__dirname, 'memory', 'shortTermMemory.txt'), '');
         }
     
         const reply = await chatGPT(conversationLog, customRole);
@@ -341,6 +361,10 @@ client.on('messageCreate', async (message) => {
     
         // 70% chance to send a text message without a GIF (already handled by initializing replyContent)
         message.reply({ content: replyContent, files: replyFile ? [replyFile] : [] });
+        
+        if (blooActivated && messageCount < 5) {
+          fs.appendFileSync(path.join(__dirname, 'memory', 'shortTermMemory.txt'), `Bloo: ${replyContent}\n`);
+        }
       }
     }
   } catch (error) { // This line should be here
@@ -354,6 +378,10 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 
   if (newState.member.id === client.user.id && !oldState.channelId && newState.channelId) {
     console.log('Bloo joined a voice channel');
+  } else if (oldState.member.id === client.user.id && oldState.channelId && !newState.channelId) {
+    console.log('Bloo left a voice channel');
+    connection = null;
+    listeningUsers.clear(); // Clear the set of listening users
   }
 });
 
