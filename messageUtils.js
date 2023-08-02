@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const memoryFolderPath = path.join(__dirname, 'memory');
+const { readShortTermMemory } = require('./memoryHandler');
 
 
 function filterMessages(message, client, blooActivated) {
@@ -29,7 +30,10 @@ function buildConversationLog(prevMessages, client, imageDescriptionMap, maxMess
       role: 'system',
       content: 'As Bloo, respond in a very sarcastic, funny, and quick-witted manner. Feel free to use emojis in your responses. Do not send any links of any kind.',
     },
-    ...shortTermMemory.map(content => ({role: "user", content})), // Add the short-term memory content to the conversation log
+    ...shortTermMemory.map(line => {
+      const [username, content] = line.split(': ');
+      return { role: username === 'Bloo' ? 'assistant' : 'user', content };
+    }),
   ];
 
 

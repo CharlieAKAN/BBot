@@ -20,7 +20,7 @@ let connection = null;
 
 async function generateGifQuery(prompt) {
   const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
+    model: "gpt-4",
     messages: [
       { role: "system", content: "Generate a very detailed search query for a GIF related to the text from the user. Make sure the GIF you send is related to the text from the person who sent it. Be very human about how you select the gif and make sure it fit within the message the user sent you." },
       { role: "user", content: prompt }

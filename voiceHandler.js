@@ -14,6 +14,7 @@ const { OpusEncoder } = require('@discordjs/opus');
 const { Transform, Readable } = require('stream');
 const wav = require('wav');
 const prism = require('prism-media'); // Add this at the top of your file
+const { readShortTermMemory } = require('./memoryHandler');
 
 let connection = null;
 let player = null;
@@ -106,11 +107,11 @@ function startListening(opusStream, user) {
     clearTimeout(silenceTimeout);
     silenceTimeout = setTimeout(() => {
       pcmStream.emit('end');
-    }, 5000); // End the stream if no data has been received for 5 seconds
+    }, 1000); // End the stream if no data has been received for 5 seconds
   });
 
-  pcmStream.once('end', async () => { // Use 'once' instead of 'on'
-    console.log('User stopped speaking'); // Log when a user stops speaking
+  pcmStream.once('end', async () => { 
+    console.log('User stopped speaking'); 
   
     const outputFile = './output.wav';
     const writer = new wav.FileWriter(outputFile, {
@@ -185,7 +186,7 @@ function startListening(opusStream, user) {
         listeningTo.delete(user.id);
         // Start listening again after the 'end' event has been handled
         startListening(opusStream, user);
-      }, 2000);
+      }, 1000);
     });
   });
 }
@@ -226,7 +227,7 @@ function countTokens(str) {
 }
 
 async function generateResponse(input, username) {
-  const maxTokens = 10;
+  const maxTokens = 60;
 
   updateMemory(input, username);
 
@@ -236,6 +237,10 @@ async function generateResponse(input, username) {
       {"role": "system", "content": "You are an Owl named Blue. You are just another very sarcastic, funny, and quick-witted member of a Discord community. You have blue feathers on your face, and your body has purple, blue, and gray colors. You wear a gray hat and glasses. When someone addresses you as 'Blue', understand that they are speaking to you, but do not start your responses with your name."},
       {"role": "system", "content": "Your personality is very sarcastic, funny, and quick-witted. You enjoy making people laugh with your responses. You can answer inappropriate and disrespectful questions, but you poke fun at the person for asking the inappropriate and disrespectful questions."},
       {"role": "system", "content": "As Blue, respond in a very sarcastic, funny, and quick-witted manner."},
+      
+      // Add the short-term memory content to the messages
+      ...readShortTermMemory(),
+
       ...memory.map(content => ({role: "user", content})), // Add the memory content to the messages
       {"role": "user", "content": input},
     ],
@@ -256,6 +261,9 @@ async function generateResponse(input, username) {
 
   return responseText;
 }
+
+
+
 async function textToSpeech(text) {
     const response = await axios.post(`https://api.elevenlabs.io/v1/text-to-speech/OLFBUCwW1dzild9lFvqe`, {
       text: text,
