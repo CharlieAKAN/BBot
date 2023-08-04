@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus } = require('@discordjs/voice');
@@ -15,6 +16,7 @@ const { Transform, Readable } = require('stream');
 const wav = require('wav');
 const prism = require('prism-media'); // Add this at the top of your file
 const { readShortTermMemory } = require('./memoryHandler');
+const { fetchStreamedChatContent } = require('streamed-chatgpt-api');
 
 let connection = null;
 let player = null;
@@ -227,30 +229,39 @@ function countTokens(str) {
 }
 
 async function generateResponse(input, username) {
-  const maxTokens = 60;
+  const maxTokens = 100;
 
+  // Add the input message to the memory before generating the response
   updateMemory(input, username);
 
-  const response = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo', 
-    messages: [
-      {"role": "system", "content": "You are an Owl named Blue. You are just another very sarcastic, funny, and quick-witted member of a Discord community. You have blue feathers on your face, and your body has purple, blue, and gray colors. You wear a gray hat and glasses. When someone addresses you as 'Blue', understand that they are speaking to you, but do not start your responses with your name."},
-      {"role": "system", "content": "Your personality is very sarcastic, funny, and quick-witted. You enjoy making people laugh with your responses. You can answer inappropriate and disrespectful questions, but you poke fun at the person for asking the inappropriate and disrespectful questions."},
-      {"role": "system", "content": "As Blue, respond in a very sarcastic, funny, and quick-witted manner."},
-      
-      // Add the short-term memory content to the messages
-      ...readShortTermMemory(),
+  const messages = [
+    {"role": "system", "content": "You are an Owl named Blue. You are just another very sarcastic, funny, and quick-witted member of a Discord community. You have blue feathers on your face, and your body has purple, blue, and gray colors. You wear a gray hat and glasses. When someone addresses you as 'Blue', understand that they are speaking to you, but do not start your responses with your name."},
+    {"role": "system", "content": "Your personality is very sarcastic, funny, and quick-witted. You enjoy making people laugh with your responses. You can answer inappropriate and disrespectful questions, but you poke fun at the person for asking the inappropriate and disrespectful questions."},
+    {"role": "system", "content": "As Blue, respond in a very sarcastic, funny, and quick-witted manner."},
+    {"role": "system", "content": "Keep your responses concise and to the point."}, // Added instruction for the model to keep responses short
 
-      ...memory.map(content => ({role: "user", content})), // Add the memory content to the messages
-      {"role": "user", "content": input},
-    ],
-    max_tokens: maxTokens,
+    // Add the short-term memory content to the messages
+    ...readShortTermMemory(),
+
+    ...memory.map(content => ({role: "user", content})), // Add the memory content to the messages
+    {"role": "user", "content": input},
+  ];
+
+  const options = {
+    apiKey: process.env.API_KEY,
+    messageInput: messages,
+    maxTokens: maxTokens,
     temperature: 0.8,
-  });
+  };
 
-  // Update Bloo's memory with his response
-  let responseText = response.data.choices[0].message.content.trim();
-  updateMemory(responseText, username, false);
+  let responseText = '';
+
+  await fetchStreamedChatContent(options, (content) => {
+    // Update Bloo's memory with his response
+    updateMemory(content, username, false);
+
+    responseText += content;
+  });
 
   // Remove the "Bloo: " or "Blue: " prefix from the response text
   if (responseText.startsWith('Bloo: ')) {
@@ -263,29 +274,52 @@ async function generateResponse(input, username) {
 }
 
 
-
 async function textToSpeech(text) {
-    const response = await axios.post(`https://api.elevenlabs.io/v1/text-to-speech/OLFBUCwW1dzild9lFvqe`, {
-      text: text,
-      model_id: "eleven_monolingual_v1",
-      voice_settings: {
-        stability: 0.5,
-        similarity_boost: 0.75
-      }
-    }, {
-      headers: {
-        'accept': 'audio/mpeg',
-        'xi-api-key': process.env.ELEVENLABS_API_KEY, 
-        'Content-Type': 'application/json'
-      },
-      responseType: 'arraybuffer', 
+  const options = {
+    hostname: 'api.elevenlabs.io',
+    port: 443,
+    path: '/v1/text-to-speech/OLFBUCwW1dzild9lFvqe/stream?optimize_streaming_latency=4',
+    method: 'POST',
+    headers: {
+      'Accept': 'audio/mpeg',
+      'xi-api-key': process.env.ELEVENLABS_API_KEY,
+      'Content-Type': 'application/json'
+    }
+  };
+
+  const postData = JSON.stringify({
+    text: text,
+    model_id: "eleven_monolingual_v1",
+    voice_settings: {
+      stability: 0.5,
+      similarity_boost: 0.75
+    }
+  });
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          const audioFile = 'audio.mp3';
+          fs.writeFileSync(audioFile, Buffer.concat(chunks));
+          resolve(audioFile);
+        } else {
+          reject(new Error(`Request failed with status code ${res.statusCode}`));
+        }
+      });
     });
-  
-    // Save the audio file
-    const audioFile = 'audio.mp3';
-    fs.writeFileSync(audioFile, Buffer.from(response.data, 'binary'));
-  
-    return audioFile;
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(postData);
+    req.end();
+  });
 }
 
 function playAudio(audioFile, volume = 0.4) { // volume is a value between 0 and 1
