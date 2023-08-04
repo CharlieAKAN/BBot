@@ -52,7 +52,7 @@ async function joinVoiceChannelHandler(userVoiceChannel, user) {
   connection.once(VoiceConnectionStatus.Disconnected, () => { // Use 'once' instead of 'on'
     console.log('The connection has disconnected!');
     // Reset the short-term memory
-    // fs.writeFileSync(path.join(memoryFolderPath, 'shortTermMemory.txt'), '');
+    fs.writeFileSync(path.join(memoryFolderPath, 'shortTermMemory.txt'), '');
   });
 
   player = createAudioPlayer();
@@ -85,7 +85,7 @@ async function handleConnectionReady(connection, userVoiceChannel, user) {
   playAudio(welcomeAudioFile);
 }
 
-let audioBuffer = Buffer.alloc(0); 
+  // let audioBuffer = Buffer.alloc(0); 
 
 async function listenAndLeaveOnCommand(connection, user) {
   const receiver = connection.receiver;
@@ -100,6 +100,8 @@ async function listenAndLeaveOnCommand(connection, user) {
 function startListening(opusStream, user) {
   const pcmStream = opusStream.pipe(new prism.opus.Decoder({ rate: 48000, channels: 1 })); // Decode Opus to PCM
 
+  let audioBuffer = Buffer.alloc(0); // Add this line
+
   let silenceTimeout;
 
   pcmStream.on('data', (chunk) => { // Listen to the PCM stream instead of the Opus stream
@@ -109,13 +111,14 @@ function startListening(opusStream, user) {
     clearTimeout(silenceTimeout);
     silenceTimeout = setTimeout(() => {
       pcmStream.emit('end');
+      audioBuffer = Buffer.alloc(0); // Add this line
     }, 1000); // End the stream if no data has been received for 5 seconds
   });
 
   pcmStream.once('end', async () => { 
     console.log('User stopped speaking'); 
   
-    const outputFile = './output.wav';
+    const outputFile = getOutputFileName();
     const writer = new wav.FileWriter(outputFile, {
       channels: 1,
       sampleRate: 48000,
@@ -181,20 +184,67 @@ function startListening(opusStream, user) {
             playAudio(audioFile);
           }
         }
-          
-        // Reset the audio buffer
+        inUseFiles.delete(path.basename(outputFile));
+
         audioBuffer = Buffer.alloc(0);
-        // Remove the user from the set of users we're listening to
         listeningTo.delete(user.id);
-        // Start listening again after the 'end' event has been handled
         startListening(opusStream, user);
       }, 1000);
     });
   });
 }
 
+const outputFolderPath = path.join(__dirname, 'outputFiles');
+
+if (!fs.existsSync(outputFolderPath)) {
+  fs.mkdirSync(outputFolderPath);
+}
+
+let fileCount = 0;
+let inUseFiles = new Set();
+
+
+function getOutputFileName() {
+  return path.join(outputFolderPath, `output${fileCount++}.wav`);
+}
+
+
+function getOutputFileName() {
+  const fileName = `output${fileCount++}.wav`;
+  inUseFiles.add(fileName);
+  return path.join(outputFolderPath, fileName);
+}
+
+function deleteOldOutputFiles() {
+  const files = fs.readdirSync(outputFolderPath);
+  const fileSizeLimit = 100000000; // Set the file size limit (in bytes)
+
+  let totalSize = 0;
+  for (const file of files) {
+    if (inUseFiles.has(file)) {
+      continue;
+    }
+
+    const filePath = path.join(outputFolderPath, file);
+    const stats = fs.statSync(filePath);
+    totalSize += stats.size;
+
+    if (totalSize > fileSizeLimit) {
+      setTimeout(() => {
+        if (!inUseFiles.has(file)) { // Check again if the file is in use
+          fs.unlinkSync(filePath);
+        }
+      }, 5000); // Wait for 5 seconds before deleting the file
+    }
+  }
+}
+
+// Call deleteOldOutputFiles periodically (e.g., every minute)
+setInterval(deleteOldOutputFiles, 60000);
+
+
 const memory = []; // Bloo's short-term memory
-const memoryLimit = 4000; // The maximum number of tokens that can be stored in memory
+const memoryLimit = 600; // The maximum number of tokens that can be stored in memory
 
 function updateMemory(message, username, isUser = true) {
   // Add the new message to the memory
@@ -219,8 +269,8 @@ function updateMemory(message, username, isUser = true) {
     }
   }
 
-  // Append the new message to the short-term memory file
-  fs.appendFileSync(path.join(memoryFolderPath, 'shortTermMemory.txt'), formattedMessage + '\n');
+  // Write the entire short-term memory to the short-term memory file
+  fs.writeFileSync(path.join(memoryFolderPath, 'shortTermMemory.txt'), memory.join('\n') + '\n');
 }
 
 
