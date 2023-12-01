@@ -37,7 +37,7 @@ async function chatGPT(input, customRole = null) {
     }
 
     const result = await openai.createChatCompletion({
-      model: 'gpt-4',
+      model: 'gpt-4-1106-preview',
       messages: conversationLog,
       temperature: 0.8,
       max_tokens: 100,
@@ -74,7 +74,7 @@ async function chatGPT(input, customRole = null) {
       console.log('Farewell conversation log:', JSON.stringify(conversationLog, null, 2));
 
       const farewellResult = await openai.createChatCompletion({
-        model: 'gpt-4',
+        model: 'gpt-4-1106-preview',
         messages: conversationLog, // Fix this line
         temperature: 0.8,
         max_tokens: 100,

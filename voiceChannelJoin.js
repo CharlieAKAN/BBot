@@ -35,7 +35,7 @@ module.exports = async (oldState, newState) => {
           const member = reaction.message.guild.members.cache.get(user.id);
           await member.roles.add(role).catch(console.error);
 
-          const notificationChannel = newState.guild.channels.cache.get('539653049975570433'); 
+          const notificationChannel = newState.guild.channels.cache.get('1092282042869350451'); 
           if (notificationChannel) {
             try {
               await notificationChannel.send(`${user}, your 'Join Streamers' role has been assigned, and you can join the 'Streamer VC' when you're ready.`);
