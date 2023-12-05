@@ -99,21 +99,29 @@ async function listenAndLeaveOnCommand(connection, user) {
 }
 
 function startListening(opusStream, user) {
-  const pcmStream = opusStream.pipe(new prism.opus.Decoder({ rate: 48000, channels: 1 })); // Decode Opus to PCM
+  const pcmStream = opusStream.pipe(new prism.opus.Decoder({ rate: 48000, channels: 1 }));
 
-  let audioBuffer = Buffer.alloc(0); // Add this line
-
+  let audioBuffer = Buffer.alloc(0);
   let silenceTimeout;
+  let isSpeaking = false; // Track if the user is speaking
 
-  pcmStream.on('data', (chunk) => { // Listen to the PCM stream instead of the Opus stream
+  pcmStream.on('data', (chunk) => {
     console.log(`Received ${chunk.length} bytes of data.`);
     audioBuffer = Buffer.concat([audioBuffer, chunk]);
 
+    // Check if the chunk length exceeds a certain threshold to determine if it's speech
+    if (chunk.length > SOME_THRESHOLD) {
+      isSpeaking = true;
+    }
+
     clearTimeout(silenceTimeout);
     silenceTimeout = setTimeout(() => {
-      pcmStream.emit('end');
-      audioBuffer = Buffer.alloc(0); // Add this line
-    }, 1000); // End the stream if no data has been received for 5 seconds
+      if (isSpeaking) {
+        pcmStream.emit('end');
+        audioBuffer = Buffer.alloc(0);
+        isSpeaking = false; // Reset speaking flag
+      }
+    }, 1000);
   });
 
   pcmStream.once('end', async () => { 
