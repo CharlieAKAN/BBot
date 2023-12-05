@@ -21,6 +21,7 @@ const { fetchStreamedChatContent } = require('streamed-chatgpt-api');
 let connection = null;
 let player = null;
 let listeningTo = new Set(); // A set of user IDs that we're currently listening to
+let userInteractionCount = {}; // Global object to track user interactions
 
 const memoryFolderPath = path.join(__dirname, 'memory'); // Change 'memory' to the name of your folder
 
@@ -144,19 +145,25 @@ function startListening(opusStream, user) {
           encoding: 'LINEAR16',
           sampleRateHertz: 48000,
           languageCode: 'en-US',
+          enableSpeakerDiarization: true,
+        diarizationSpeakerCount: 5, // Adjust based on expected number of speakers
+        
         };
         const request = {
           audio: audio,
           config: config,
         };
-  
+        
+
         // Detects speech in the audio file
         const [response] = await client.recognize(request);
         const transcription = response.results
-        .map(result => result.alternatives[0].transcript)
-        .join('\n');
+          .map(result => result.alternatives[0].transcript)
+          .join('\n');
         console.log(`Transcription: ${transcription}`);
         
+        userInteractionCount[user.id] = (userInteractionCount[user.id] || 0) + 1;
+
         if (transcription.trim() !== '') { // Check if the transcription is not empty
           if (transcription.includes('leave')) {
             // Generate a farewell message using ChatGPT
@@ -254,7 +261,8 @@ function updateMemory(message, username, isUser = true) {
   } else {
     formattedMessage = message.startsWith('Bloo: ') ? message : `Bloo: ${message}`;
   }
-  memory.push(formattedMessage);
+  const timestamp = new Date().getTime(); // Get current timestamp
+  memory.push({ userId: username, timestamp, message: formattedMessage });
 
   // Check if the memory limit has been exceeded
   const memoryContent = memory.join(' ');
@@ -280,8 +288,13 @@ function countTokens(str) {
 
 async function generateResponse(input, username) {
   const maxTokens = 100;
+  const SOME_THRESHOLD = 5;
+  if (userInteractionCount[username] && userInteractionCount[username] > SOME_THRESHOLD) {
 
   // Add the input message to the memory before generating the response
+    return "Thanks for your input! I'm currently assisting others but will get back to you soon.";
+  }
+  
   updateMemory(input, username);
 
   const messages = [
