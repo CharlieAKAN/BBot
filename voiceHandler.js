@@ -18,6 +18,8 @@ const prism = require('prism-media'); // Add this at the top of your file
 const { readShortTermMemory } = require('./memoryHandler');
 const { fetchStreamedChatContent } = require('streamed-chatgpt-api');
 
+const SPEECH_THRESHOLD = 1000; // Adjust this value based on testing
+
 let connection = null;
 let player = null;
 let listeningTo = new Set(); // A set of user IDs that we're currently listening to
@@ -100,7 +102,7 @@ async function listenAndLeaveOnCommand(connection, user) {
 
 function startListening(opusStream, user) {
   const pcmStream = opusStream.pipe(new prism.opus.Decoder({ rate: 48000, channels: 1 }));
-
+  
   let audioBuffer = Buffer.alloc(0);
   let silenceTimeout;
   let isSpeaking = false; // Track if the user is speaking
@@ -109,8 +111,7 @@ function startListening(opusStream, user) {
     console.log(`Received ${chunk.length} bytes of data.`);
     audioBuffer = Buffer.concat([audioBuffer, chunk]);
 
-    // Check if the chunk length exceeds a certain threshold to determine if it's speech
-    if (chunk.length > SOME_THRESHOLD) {
+    if (chunk.length > SPEECH_THRESHOLD) {
       isSpeaking = true;
     }
 
@@ -124,7 +125,7 @@ function startListening(opusStream, user) {
     }, 1000);
   });
 
-  pcmStream.once('end', async () => { 
+  pcmStream.once('end', async () => {
     console.log('User stopped speaking'); 
   
     const outputFile = getOutputFileName();
@@ -296,9 +297,9 @@ function countTokens(str) {
 
 async function generateResponse(input, username) {
   const maxTokens = 100;
-  const SOME_THRESHOLD = 5;
-  if (userInteractionCount[username] && userInteractionCount[username] > SOME_THRESHOLD) {
-
+  const USER_INTERACTION_THRESHOLD = 5;
+  if (userInteractionCount[username] && userInteractionCount[username] > USER_INTERACTION_THRESHOLD) {
+  
   // Add the input message to the memory before generating the response
     return "Thanks for your input! I'm currently assisting others but will get back to you soon.";
   }
