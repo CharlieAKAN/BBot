@@ -183,7 +183,7 @@ let status = [
     type: ActivityType.Watching,
   },
   {
-    name: 'v2.4',
+    name: 'v2.5',
     type: ActivityType.Playing,
   },
 ];
